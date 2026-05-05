@@ -1,33 +1,53 @@
 package com.parking.entity;
-
+import com.parking.enums.VehicleType;
 import java.math.BigDecimal;
 
 public class PriceConfig {
-    private Long id; // Chuyển sang Long cho khớp BIGINT
-    private Long lotId; 
-    private String vehicleType;
-    private BigDecimal baseFee;
-    private BigDecimal extraFeePerHour;
-    private BigDecimal monthlyPrice;
+    private Long id;
+    private VehicleType vehicleType; 
+    private BigDecimal baseFee;          // Giá khởi điểm[cite: 17]
+    private BigDecimal extraFeePerHour;  // Phí mỗi giờ tiếp theo[cite: 17]
+    private BigDecimal monthlyPrice;     // Giá vé tháng[cite: 17]
 
     public PriceConfig() {}
 
-    // --- Getter và Setter ---
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+	public Long getId() {
+		return id;
+	}
 
-    public Long getLotId() { return lotId; }
-    public void setLotId(Long lotId) { this.lotId = lotId; }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getVehicleType() { return vehicleType; }
-    public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
+	public VehicleType getVehicleType() {
+		return vehicleType;
+	}
 
-    public BigDecimal getBaseFee() { return baseFee; }
-    public void setBaseFee(BigDecimal baseFee) { this.baseFee = baseFee; }
+	public void setVehicleType(VehicleType vehicleType) {
+		this.vehicleType = vehicleType;
+	}
 
-    public BigDecimal getExtraFeePerHour() { return extraFeePerHour; }
-    public void setExtraFeePerHour(BigDecimal extraFeePerHour) { this.extraFeePerHour = extraFeePerHour; }
+	public BigDecimal getBaseFee() {
+		return baseFee;
+	}
 
-    public BigDecimal getMonthlyPrice() { return monthlyPrice; }
-    public void setMonthlyPrice(BigDecimal monthlyPrice) { this.monthlyPrice = monthlyPrice; }
+	public void setBaseFee(BigDecimal baseFee) {
+		this.baseFee = baseFee;
+	}
+
+	public BigDecimal getExtraFeePerHour() {
+		return extraFeePerHour;
+	}
+
+	public void setExtraFeePerHour(BigDecimal extraFeePerHour) {
+		this.extraFeePerHour = extraFeePerHour;
+	}
+
+	public BigDecimal getMonthlyPrice() {
+		return monthlyPrice;
+	}
+
+	public void setMonthlyPrice(BigDecimal monthlyPrice) {
+		this.monthlyPrice = monthlyPrice;
+	}
 }

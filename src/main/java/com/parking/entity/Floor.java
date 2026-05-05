@@ -2,9 +2,7 @@ package com.parking.entity;
 
 public class Floor {
     private Long id;
-    private Long lotId; // Chuyển từ đối tượng sang ID
-    private Integer floorNumber;
-    private Integer totalSlots;
+    private Integer floorNumber; // Số tầng (1, 2, 3...)[cite: 14]
     private String description;
 
     public Floor() {}
@@ -17,28 +15,12 @@ public class Floor {
 		this.id = id;
 	}
 
-	public Long getLotId() {
-		return lotId;
-	}
-
-	public void setLotId(Long lotId) {
-		this.lotId = lotId;
-	}
-
 	public Integer getFloorNumber() {
 		return floorNumber;
 	}
 
 	public void setFloorNumber(Integer floorNumber) {
 		this.floorNumber = floorNumber;
-	}
-
-	public Integer getTotalSlots() {
-		return totalSlots;
-	}
-
-	public void setTotalSlots(Integer totalSlots) {
-		this.totalSlots = totalSlots;
 	}
 
 	public String getDescription() {
@@ -48,5 +30,4 @@ public class Floor {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 }
