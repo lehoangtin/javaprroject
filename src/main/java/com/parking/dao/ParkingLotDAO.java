@@ -1,6 +1,6 @@
 package com.parking.dao;
 
-import com.parking.entity.ParkingLot;
+import com.parking.entity.ParkingInfo;
 import com.parking.utils.DBConnection;
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,14 +9,14 @@ import java.util.List;
 public class ParkingLotDAO {
 
     // 1. ĐỌC: Lấy danh sách bãi xe
-    public List<ParkingLot> getAll() {
-        List<ParkingLot> list = new ArrayList<>();
+    public List<ParkingInfo> getAll() {
+        List<ParkingInfo> list = new ArrayList<>();
         String sql = "SELECT * FROM ParkingLot";
         try (Connection conn = DBConnection.getConnection();
              Statement st = conn.createStatement();
              ResultSet rs = st.executeQuery(sql)) {
             while (rs.next()) {
-                ParkingLot p = new ParkingLot();
+                ParkingInfo p = new ParkingInfo();
                 p.setId(rs.getLong("id"));
                 p.setName(rs.getString("name"));
                 p.setAddress(rs.getString("address"));
@@ -35,7 +35,7 @@ public class ParkingLotDAO {
     }
 
     // 2. THÊM MỚI
-    public boolean insert(ParkingLot p) {
+    public boolean insert(ParkingInfo p) {
         String sql = "INSERT INTO ParkingLot (name, address, phone, total_floors, created_at) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -53,7 +53,7 @@ public class ParkingLotDAO {
     }
 
     // 3. CẬP NHẬT
-    public boolean update(ParkingLot p) {
+    public boolean update(ParkingInfo p) {
         String sql = "UPDATE ParkingLot SET name = ?, address = ?, phone = ?, total_floors = ? WHERE id = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {

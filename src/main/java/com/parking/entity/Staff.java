@@ -1,12 +1,15 @@
 package com.parking.entity;
+import com.parking.enums.UserRole;
+import java.time.LocalDateTime;
 
 public class Staff {
     private Long id;
     private String fullName;
     private String username;
-    private String password;
-    private String role;
+    private String passwordHash; // Không lưu plaintext[cite: 19]
+    private UserRole role;       // ADMIN hoặc STAFF
     private Boolean isActive;
+    private LocalDateTime createdAt;
 
     public Staff() {}
 
@@ -34,19 +37,19 @@ public class Staff {
 		this.username = username;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getPasswordHash() {
+		return passwordHash;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setPasswordHash(String passwordHash) {
+		this.passwordHash = passwordHash;
 	}
 
-	public String getRole() {
+	public UserRole getRole() {
 		return role;
 	}
 
-	public void setRole(String role) {
+	public void setRole(UserRole role) {
 		this.role = role;
 	}
 
@@ -56,6 +59,14 @@ public class Staff {
 
 	public void setIsActive(Boolean isActive) {
 		this.isActive = isActive;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
 	}
     
 }

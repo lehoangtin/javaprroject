@@ -1,7 +1,7 @@
 package com.parking.gui;
 
 import com.parking.bll.ParkingLotBLL;
-import com.parking.entity.ParkingLot;
+import com.parking.entity.ParkingInfo;
 import com.parking.gui.Theme;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -85,7 +85,7 @@ public class ParkingLotPanel extends JPanel {
     private void handleEdit() {
         int row = table.getSelectedRow();
         if (row != -1) {
-            ParkingLot p = new ParkingLot();
+            ParkingInfo p = new ParkingInfo();
             p.setId((Long) model.getValueAt(row, 0));
             p.setName((String) model.getValueAt(row, 1));
             p.setAddress((String) model.getValueAt(row, 2));
@@ -102,7 +102,7 @@ public class ParkingLotPanel extends JPanel {
     }
 
     // --- Popup Dialog nhập liệu ---
-    private void showLotDialog(ParkingLot lot) {
+    private void showLotDialog(ParkingInfo lot) {
         boolean isAdd = (lot == null);
         JDialog dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(this), isAdd ? "Thêm Bãi Xe Mới" : "Sửa Thông Tin Bãi Xe", true);
         dialog.setSize(400, 320);
@@ -125,7 +125,7 @@ public class ParkingLotPanel extends JPanel {
         JButton btnSave = createFlatButton("Lưu thông tin", Theme.ACCENT_GREEN);
         btnSave.addActionListener(e -> {
             try {
-                ParkingLot p = isAdd ? new ParkingLot() : lot;
+                ParkingInfo p = isAdd ? new ParkingInfo() : lot;
                 p.setName(txtName.getText().trim());
                 p.setAddress(txtAddress.getText().trim());
                 p.setPhone(txtPhone.getText().trim());
@@ -163,8 +163,8 @@ public class ParkingLotPanel extends JPanel {
     private void loadData() {
         model.setRowCount(0);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-        List<ParkingLot> list = bll.getAllParkingLots();
-        for (ParkingLot p : list) {
+        List<ParkingInfo> list = bll.getAllParkingLots();
+        for (ParkingInfo p : list) {
             String createdAt = p.getCreatedAt() != null ? p.getCreatedAt().format(dtf) : "";
             model.addRow(new Object[]{
                 p.getId(), p.getName(), p.getAddress(), p.getPhone(), p.getTotalFloors(), createdAt

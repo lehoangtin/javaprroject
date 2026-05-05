@@ -1,17 +1,17 @@
 package com.parking.bll;
 
 import com.parking.dao.ParkingLotDAO;
-import com.parking.entity.ParkingLot;
+import com.parking.entity.ParkingInfo;
 import java.util.List;
 
 public class ParkingLotBLL {
     private ParkingLotDAO parkingLotDAO = new ParkingLotDAO();
 
-    public List<ParkingLot> getAllParkingLots() {
+    public List<ParkingInfo> getAllParkingLots() {
         return parkingLotDAO.getAll();
     }
 
-    public boolean saveParkingLot(ParkingLot p) {
+    public boolean saveParkingLot(ParkingInfo p) {
         if (p.getName() == null || p.getName().trim().isEmpty()) {
             throw new IllegalArgumentException("Tên bãi đỗ xe không được để trống!");
         }

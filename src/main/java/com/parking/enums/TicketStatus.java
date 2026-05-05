@@ -1,7 +1,7 @@
 package com.parking.enums;
 
 public enum TicketStatus {
-    ACTIVE,   // Đang hoạt động
-    INACTIVE, // Đã khóa/Hết hạn
-    LOST      // Thẻ bị báo mất
+    ACTIVE,   // Đang hoạt động bình thường[cite: 11]
+    INACTIVE, // Thẻ bị khóa hoặc hết hạn[cite: 11]
+    LOST      // Thẻ bị báo mất (không thể sử dụng)[cite: 11]
 }
