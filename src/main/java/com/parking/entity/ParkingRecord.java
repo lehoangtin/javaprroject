@@ -1,40 +1,64 @@
 package com.parking.entity;
-
-import jakarta.persistence.*;
+import com.parking.enums.RecordStatus; //[cite: 17]
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "PARKING_RECORD")
 public class ParkingRecord {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    @ManyToOne
-    @JoinColumn(name = "vehicle_id")
-    private Vehicle vehicle;
-
-    @Column(name = "plate_number")
-    private String plateNumber;
-
-    @ManyToOne
-    @JoinColumn(name = "slot_id")
-    private Slot slot;
-
-    @ManyToOne
-    @JoinColumn(name = "staff_id")
-    private Staff staff;
-
-    @Column(name = "time_in")
+    private Long id;
     private LocalDateTime timeIn;
-
-    @Column(name = "time_out")
     private LocalDateTime timeOut;
-
     private BigDecimal fee;
+    private Long vehicleId;
+    private Long slotId;
+    private Long ticketId;
+    private RecordStatus status; // Đã đổi từ String sang Enum[cite: 17]
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public LocalDateTime getTimeIn() {
+		return timeIn;
+	}
+	public void setTimeIn(LocalDateTime timeIn) {
+		this.timeIn = timeIn;
+	}
+	public LocalDateTime getTimeOut() {
+		return timeOut;
+	}
+	public void setTimeOut(LocalDateTime timeOut) {
+		this.timeOut = timeOut;
+	}
+	public BigDecimal getFee() {
+		return fee;
+	}
+	public void setFee(BigDecimal fee) {
+		this.fee = fee;
+	}
+	public Long getVehicleId() {
+		return vehicleId;
+	}
+	public void setVehicleId(Long vehicleId) {
+		this.vehicleId = vehicleId;
+	}
+	public Long getSlotId() {
+		return slotId;
+	}
+	public void setSlotId(Long slotId) {
+		this.slotId = slotId;
+	}
+	public Long getTicketId() {
+		return ticketId;
+	}
+	public void setTicketId(Long ticketId) {
+		this.ticketId = ticketId;
+	}
+	public RecordStatus getStatus() {
+		return status;
+	}
+	public void setStatus(RecordStatus status) {
+		this.status = status;
+	}
 
-    @Column(name = "payment_status")
-    private String paymentStatus;
 }

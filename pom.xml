@@ -4,19 +4,6 @@
   <artifactId>ParkingSystem</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <dependencies>
-      <!-- 1. Thư viện kết nối MySQL -->
-      <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-core</artifactId>
-        <version>6.4.4.Final</version>
-    </dependency>
-
-    <dependency>
-        <groupId>jakarta.persistence</groupId>
-        <artifactId>jakarta.persistence-api</artifactId>
-        <version>3.1.0</version>
-    </dependency>
-
 	<dependency>
           <groupId>mysql</groupId>
           <artifactId>mysql-connector-java</artifactId>

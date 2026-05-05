@@ -1,29 +1,33 @@
 package com.parking.entity;
 
-import jakarta.persistence.*;
 import java.math.BigDecimal;
 
-@Entity
-@Table(name = "PRICE_CONFIG")
 public class PriceConfig {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    @ManyToOne
-    @JoinColumn(name = "lot_id")
-    private ParkingLot parkingLot;
-
-    @Column(name = "vehicle_type")
+    private Long id; // Chuyển sang Long cho khớp BIGINT
+    private Long lotId; 
     private String vehicleType;
-
-    @Column(name = "base_fee")
     private BigDecimal baseFee;
-
-    @Column(name = "extra_fee_per_hour")
     private BigDecimal extraFeePerHour;
-
-    @Column(name = "monthly_price")
     private BigDecimal monthlyPrice;
+
+    public PriceConfig() {}
+
+    // --- Getter và Setter ---
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public Long getLotId() { return lotId; }
+    public void setLotId(Long lotId) { this.lotId = lotId; }
+
+    public String getVehicleType() { return vehicleType; }
+    public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
+
+    public BigDecimal getBaseFee() { return baseFee; }
+    public void setBaseFee(BigDecimal baseFee) { this.baseFee = baseFee; }
+
+    public BigDecimal getExtraFeePerHour() { return extraFeePerHour; }
+    public void setExtraFeePerHour(BigDecimal extraFeePerHour) { this.extraFeePerHour = extraFeePerHour; }
+
+    public BigDecimal getMonthlyPrice() { return monthlyPrice; }
+    public void setMonthlyPrice(BigDecimal monthlyPrice) { this.monthlyPrice = monthlyPrice; }
 }

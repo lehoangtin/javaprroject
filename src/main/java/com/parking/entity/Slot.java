@@ -1,28 +1,49 @@
 package com.parking.entity;
-
-import jakarta.persistence.*;
+import com.parking.enums.*; // Import tất cả enum[cite: 18, 21]
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "SLOT")
 public class Slot {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    @ManyToOne
-    @JoinColumn(name = "floor_id")
-    private Floor floor;
-
-    @Column(name = "slot_code")
+    private Long id;
+    private Long floorId;
     private String slotCode;
-
-    @Column(name = "vehicle_type")
-    private String vehicleType;
-
-    private String status;
-
-    @Column(name = "updated_at")
+    private VehicleType vehicleType; // Đã đổi từ String[cite: 21]
+    private SlotStatus status;       // Đã đổi từ String[cite: 18]
     private LocalDateTime updatedAt;
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Long getFloorId() {
+		return floorId;
+	}
+	public void setFloorId(Long floorId) {
+		this.floorId = floorId;
+	}
+	public String getSlotCode() {
+		return slotCode;
+	}
+	public void setSlotCode(String slotCode) {
+		this.slotCode = slotCode;
+	}
+	public VehicleType getVehicleType() {
+		return vehicleType;
+	}
+	public void setVehicleType(VehicleType vehicleType) {
+		this.vehicleType = vehicleType;
+	}
+	public SlotStatus getStatus() {
+		return status;
+	}
+	public void setStatus(SlotStatus status) {
+		this.status = status;
+	}
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
 }

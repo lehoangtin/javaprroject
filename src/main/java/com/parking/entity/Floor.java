@@ -1,28 +1,52 @@
 package com.parking.entity;
 
-import jakarta.persistence.*;
-import java.util.List;
-
-@Entity
-@Table(name = "FLOOR")
 public class Floor {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    @ManyToOne
-    @JoinColumn(name = "lot_id")
-    private ParkingLot parkingLot;
-
-    @Column(name = "floor_number")
+    private Long id;
+    private Long lotId; // Chuyển từ đối tượng sang ID
     private Integer floorNumber;
-
-    @Column(name = "total_slots")
     private Integer totalSlots;
-
     private String description;
 
-    @OneToMany(mappedBy = "floor")
-    private List<Slot> slots;
+    public Floor() {}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getLotId() {
+		return lotId;
+	}
+
+	public void setLotId(Long lotId) {
+		this.lotId = lotId;
+	}
+
+	public Integer getFloorNumber() {
+		return floorNumber;
+	}
+
+	public void setFloorNumber(Integer floorNumber) {
+		this.floorNumber = floorNumber;
+	}
+
+	public Integer getTotalSlots() {
+		return totalSlots;
+	}
+
+	public void setTotalSlots(Integer totalSlots) {
+		this.totalSlots = totalSlots;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 }
