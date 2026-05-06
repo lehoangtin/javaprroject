@@ -22,7 +22,11 @@ public class PriceConfigBLL {
     }
 
     public boolean addConfig(VehicleType vehicleType, BigDecimal baseFee, BigDecimal extraFee, BigDecimal monthlyPrice) {
-        if (!isValidPrice(baseFee) || !isValidPrice(extraFee) || !isValidPrice(monthlyPrice) || vehicleType == null) {
+    	// KIỂM TRA RÀNG BUỘC SỐ ÂM
+        if (baseFee.compareTo(BigDecimal.ZERO) < 0 || 
+            extraFee.compareTo(BigDecimal.ZERO) < 0 || 
+            monthlyPrice.compareTo(BigDecimal.ZERO) < 0) {
+            System.err.println("Lỗi nghiệp vụ: Giá tiền không được là số âm!");
             return false;
         }
         PriceConfig config = new PriceConfig();
@@ -35,9 +39,11 @@ public class PriceConfigBLL {
     }
 
     public boolean updateConfig(Long id, VehicleType vehicleType, BigDecimal baseFee, BigDecimal extraFee, BigDecimal monthlyPrice) {
-        if (!isValidPrice(baseFee) || !isValidPrice(extraFee) || !isValidPrice(monthlyPrice) || vehicleType == null) {
-            return false;
-        }
+    	if (baseFee.compareTo(BigDecimal.ZERO) < 0 || 
+                extraFee.compareTo(BigDecimal.ZERO) < 0 || 
+                monthlyPrice.compareTo(BigDecimal.ZERO) < 0) {
+                return false;
+            }
         PriceConfig config = new PriceConfig();
         config.setId(id);
         config.setVehicleType(vehicleType);
@@ -50,5 +56,9 @@ public class PriceConfigBLL {
 
     public boolean deleteConfig(Long id) {
         return priceConfigDAO.deletePriceConfig(id);
+    }
+ // Viết sẵn hàm này cho Phi tính tiền
+    public PriceConfig getConfigByVehicleType(VehicleType type) {
+        return priceConfigDAO.getConfigByType(type); 
     }
 }

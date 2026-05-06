@@ -74,10 +74,46 @@ public class SlotManagementPanel extends JPanel {
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         btnPanel.setBackground(Theme.BG_PRIMARY);
         
-        btnAdd = new JButton("Thêm"); btnAdd.setBackground(Theme.ACCENT_TEAL); btnAdd.setForeground(Color.WHITE);
-        btnUpdate = new JButton("Sửa"); btnUpdate.setBackground(Theme.ACCENT_BLUE); btnUpdate.setForeground(Color.WHITE);
-        btnDelete = new JButton("Xóa"); btnDelete.setBackground(Theme.ACCENT_RED); btnDelete.setForeground(Color.WHITE);
+     // Khởi tạo và thiết lập trực tiếp cho từng nút
+        btnAdd = new JButton("Thêm");
+        btnAdd.setFont(Theme.FONT_TITLE);
+        btnAdd.setBackground(Theme.ACCENT_TEAL);
+        btnAdd.setForeground(Color.WHITE);
+        btnAdd.setFocusPainted(false);
+        btnAdd.setBorderPainted(false); // Bắt buộc cho macOS
+        btnAdd.setOpaque(true);         // Bắt buộc cho macOS
+        btnAdd.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnAdd.setPreferredSize(new Dimension(130, 35));
+
+        btnUpdate = new JButton("Sửa");
+        btnUpdate.setFont(Theme.FONT_TITLE);
+        btnUpdate.setBackground(Theme.ACCENT_BLUE);
+        btnUpdate.setForeground(Color.WHITE);
+        btnUpdate.setFocusPainted(false);
+        btnUpdate.setBorderPainted(false);
+        btnUpdate.setOpaque(true);
+        btnUpdate.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnUpdate.setPreferredSize(new Dimension(130, 35));
+
+        btnDelete = new JButton("Xóa");
+        btnDelete.setFont(Theme.FONT_TITLE);
+        btnDelete.setBackground(Theme.ACCENT_RED);
+        btnDelete.setForeground(Color.WHITE);
+        btnDelete.setFocusPainted(false);
+        btnDelete.setBorderPainted(false);
+        btnDelete.setOpaque(true);
+        btnDelete.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnDelete.setPreferredSize(new Dimension(130, 35));
+
         btnClear = new JButton("Làm mới");
+        btnClear.setFont(Theme.FONT_TITLE);
+        btnClear.setBackground(Theme.TEXT_MUTED); // Đồng bộ màu xám
+        btnClear.setForeground(Color.WHITE);
+        btnClear.setFocusPainted(false);
+        btnClear.setBorderPainted(false);
+        btnClear.setOpaque(true);
+        btnClear.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnClear.setPreferredSize(new Dimension(130, 35));
 
         btnPanel.add(btnAdd); btnPanel.add(btnUpdate); btnPanel.add(btnDelete); btnPanel.add(btnClear);
         bottomPanel.add(btnPanel, BorderLayout.SOUTH);

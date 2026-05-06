@@ -6,19 +6,24 @@ import com.parking.entity.ParkingInfo;
 import javax.swing.*;
 import java.awt.*;
 
-public class ParkingLotPanel extends JPanel {
+public class ParkingInfoPanel extends JPanel {
     private JTextField txtName;
     private JTextField txtAddress;
     private JTextField txtHotline;
     private JTextField txtCapacity;
+    
+    // Khai báo 2 nút
+    private JButton btnEdit;
     private JButton btnSave;
     
     private ParkingInfoBLL bll;
 
-    public ParkingLotPanel() {
+    public ParkingInfoPanel() {
         bll = new ParkingInfoBLL();
         initComponents();
         loadData();
+        // Mặc định khóa form khi vừa load lên
+        setFieldsEnabled(false);
     }
 
     private void initComponents() {
@@ -61,10 +66,23 @@ public class ParkingLotPanel extends JPanel {
 
         cardPanel.add(formPanel, BorderLayout.CENTER);
 
-        // --- Nút lưu ---
-        JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        // --- Khu vực chứa nút bấm ---
+        JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
         btnPanel.setBackground(Theme.BG_PRIMARY);
         
+        // Nút Chỉnh Sửa
+        btnEdit = new JButton("Chỉnh Sửa");
+        btnEdit.setFont(Theme.FONT_TITLE);
+        btnEdit.setBackground(Color.DARK_GRAY);
+        btnEdit.setForeground(Color.WHITE);
+        btnEdit.setFocusPainted(false);
+        btnEdit.setBorderPainted(false);
+        btnEdit.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnEdit.setPreferredSize(new Dimension(150, 40));
+        btnEdit.addActionListener(e -> setFieldsEnabled(true)); // Bấm Edit thì mở khóa form
+        btnEdit.setBorderPainted(false);
+        btnEdit.setOpaque(true); // Thêm dòng này
+        // Nút Lưu
         btnSave = new JButton("Lưu Thay Đổi");
         btnSave.setFont(Theme.FONT_TITLE);
         btnSave.setBackground(Theme.ACCENT_BLUE);
@@ -72,9 +90,11 @@ public class ParkingLotPanel extends JPanel {
         btnSave.setFocusPainted(false);
         btnSave.setBorderPainted(false);
         btnSave.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btnSave.setPreferredSize(new Dimension(200, 40));
-        
-        btnSave.addActionListener(e -> saveAction());
+        btnSave.setPreferredSize(new Dimension(150, 40));
+        btnSave.addActionListener(e -> saveAction()); // Bấm Lưu thì gọi hàm Save
+        btnSave.setBorderPainted(false);
+        btnSave.setOpaque(true); // Thêm dòng này
+        btnPanel.add(btnEdit);
         btnPanel.add(btnSave);
         
         cardPanel.add(btnPanel, BorderLayout.SOUTH);
@@ -97,7 +117,20 @@ public class ParkingLotPanel extends JPanel {
                 BorderFactory.createLineBorder(Theme.BORDER),
                 BorderFactory.createEmptyBorder(8, 8, 8, 8)
         ));
+        // Đổi màu nền một chút khi textfield bị khóa (tùy chọn)
+        textField.setDisabledTextColor(Color.GRAY);
         return textField;
+    }
+
+    // --- Hàm điều khiển trạng thái Form ---
+    private void setFieldsEnabled(boolean isEnabled) {
+        txtName.setEnabled(isEnabled);
+        txtAddress.setEnabled(isEnabled);
+        txtHotline.setEnabled(isEnabled);
+        txtCapacity.setEnabled(isEnabled);
+        
+        btnSave.setEnabled(isEnabled);     // Đang mở form thì nút Lưu bật
+        btnEdit.setEnabled(!isEnabled);    // Đang mở form thì nút Edit tắt
     }
 
     // --- Logic xử lý ---
@@ -120,6 +153,7 @@ public class ParkingLotPanel extends JPanel {
 
             if (bll.saveInfo(name, address, hotline, capacity)) {
                 JOptionPane.showMessageDialog(this, "Đã lưu thông tin bãi xe thành công!");
+                setFieldsEnabled(false); // Lưu thành công thì khóa form lại
             } else {
                 JOptionPane.showMessageDialog(this, "Lưu thất bại. Vui lòng kiểm tra lại thông tin (Tên và Sức chứa không được trống)!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }

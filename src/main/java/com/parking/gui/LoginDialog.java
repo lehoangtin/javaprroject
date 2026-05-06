@@ -2,6 +2,7 @@ package com.parking.gui;
 
 import com.parking.bll.StaffBLL;
 import com.parking.entity.Staff;
+import com.parking.utils.Session; // THÊM IMPORT SESSION
 
 import javax.swing.*;
 import java.awt.*;
@@ -87,17 +88,17 @@ public class LoginDialog extends JDialog {
 
         btnLogin = new JButton("Đăng Nhập");
         btnLogin.setFont(Theme.FONT_TITLE);
-        btnLogin.setBackground(Theme.ACCENT_BLUE);
-        btnLogin.setForeground(Color.WHITE);
-        btnLogin.setFocusPainted(false);
-        btnLogin.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnLogin.setBackground(Theme.ACCENT_BLUE); // Màu xanh từ Theme[cite: 12]
+        btnLogin.setForeground(Color.WHITE);       // Chữ trắng
+        btnLogin.setBorderPainted(false);          // Quan trọng cho macOS
+        btnLogin.setOpaque(true);                  // Quan trọng cho macOS
 
         btnCancel = new JButton("Thoát");
         btnCancel.setFont(Theme.FONT_TITLE);
-        btnCancel.setBackground(Theme.ACCENT_RED);
+        btnCancel.setBackground(Theme.ACCENT_RED);  // Màu đỏ[cite: 12]
         btnCancel.setForeground(Color.WHITE);
-        btnCancel.setFocusPainted(false);
-        btnCancel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnCancel.setBorderPainted(false);
+        btnCancel.setOpaque(true);
 
         btnPanel.add(btnLogin);
         btnPanel.add(btnCancel);
@@ -133,6 +134,10 @@ public class LoginDialog extends JDialog {
         if (staff != null) {
             this.loggedInStaff = staff;
             this.succeeded = true;
+            
+            // LƯU TRỮ VÀO SESSION Ở ĐÂY ĐỂ PHÂN QUYỀN TRÊN TOÀN HỆ THỐNG
+            Session.currentUser = staff; 
+            
             dispose(); // Đóng hộp thoại thành công
         } else {
             JOptionPane.showMessageDialog(this,
@@ -144,12 +149,12 @@ public class LoginDialog extends JDialog {
         }
     }
 
-    // Hàm này sẽ được Main.java gọi để kiểm tra xem có được mở MainFrame không[cite: 13]
+    // Hàm này sẽ được Main.java gọi để kiểm tra xem có được mở MainFrame không
     public boolean isSucceeded() {
         return succeeded;
     }
 
-    // (Tùy chọn) Lấy thông tin nhân viên đang đăng nhập để hiển thị lên MainFrame
+    // Lấy thông tin nhân viên đang đăng nhập để hiển thị lên MainFrame
     public Staff getLoggedInStaff() {
         return loggedInStaff;
     }

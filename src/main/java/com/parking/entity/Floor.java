@@ -2,7 +2,7 @@ package com.parking.entity;
 
 public class Floor {
     private Long id;
-    private Integer floorNumber; // Số tầng (1, 2, 3...)[cite: 14]
+    private Integer floorNumber; 
     private String description;
 
     public Floor() {}

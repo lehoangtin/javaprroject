@@ -1,44 +1,38 @@
 import javax.swing.UIManager;
 import javax.swing.SwingUtilities;
 import javax.swing.JOptionPane;
-
-// Import các giao diện từ thư mục com/parking/gui
 import com.parking.gui.LoginDialog;
 import com.parking.gui.MainFrame;
 
-/**
- * Lớp khởi chạy chính của hệ thống.
- */
 public class Main {
-    
     public static void main(String[] args) {
-        // 1. Thiết lập giao diện theo hệ điều hành (Windows/macOS)
+        System.out.println(">>> 1. Đang khởi động hệ thống..."); 
         try { 
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); 
-        } catch (Exception e) {
-            System.err.println("Không thể thiết lập Look and Feel: " + e.getMessage());
-        }
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception ignored) {}
 
-        // 2. Khởi chạy luồng giao diện Swing
         SwingUtilities.invokeLater(() -> {
             try {
-                // Mở hộp thoại đăng nhập trước
+                System.out.println(">>> 2. Đang khởi tạo cửa sổ Đăng nhập...");
                 LoginDialog login = new LoginDialog();
-                login.setVisible(true);
+                
+                System.out.println(">>> 3. Hiển thị LoginDialog (Chờ người dùng nhập liệu)...");
+                login.setVisible(true); 
 
-                // Kiểm tra kết quả đăng nhập
+                // Sau khi Dialog đóng, kiểm tra xem đăng nhập có thành công không
                 if (login.isSucceeded()) {
-                    // Đăng nhập thành công -> Mở giao diện chính
+                    System.out.println(">>> 4. Đăng nhập THÀNH CÔNG! Đang mở giao diện chính...");
                     MainFrame mainFrame = new MainFrame();
                     mainFrame.setVisible(true);
                 } else {
-                    // Tắt hộp thoại mà không đăng nhập -> Thoát app
-                    System.out.println("Ứng dụng kết thúc do không đăng nhập.");
+                    System.out.println(">>> 4. Đăng nhập THẤT BẠI hoặc người dùng đã đóng cửa sổ. Thoát ứng dụng.");
                     System.exit(0); 
                 }
             } catch (Exception e) {
-                e.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Lỗi khởi động: " + e.getMessage());
+                // In chi tiết lỗi ra Console để bạn biết chính xác lỗi ở dòng nào
+                System.err.println("!!! LỖI KHỞI ĐỘNG NGHIÊM TRỌNG:");
+                e.printStackTrace(); 
+                JOptionPane.showMessageDialog(null, "Lỗi khởi động: " + e.toString());
             }
         });
     }

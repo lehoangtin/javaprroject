@@ -68,7 +68,7 @@ public class StaffDAO {
         } catch (SQLException e) { e.printStackTrace(); }
         return false;
     }
-    public Staff authenticate(String username, String passwordHash) {
+    public Staff login(String username, String passwordHash) {
         String sql = "SELECT * FROM staff WHERE username = ? AND password_hash = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {

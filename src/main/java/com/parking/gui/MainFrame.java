@@ -14,11 +14,12 @@ public class MainFrame extends JFrame {
     // Các Panel cũ[cite: 12]
 //    private CheckInOutPanel checkPanel;
 //    private SlotPanel slotPanel; // Sơ đồ UI do Thịnh/Phi làm
-    private ParkingLotPanel lotPanel;
+    private ParkingInfoPanel lotPanel;
     private FloorPanel floorPanel;
     private PriceConfigPanel pricePanel;
     private StaffPanel staffPanel;
-    
+    private SlotVisualPanel slotVisualPanel; // THÊM DÒNG NÀY
+
     // Bổ sung các Panel mới của Tín
     private SlotManagementPanel slotManagePanel; 
 //    private MonthlySubscriptionPanel subPanel;
@@ -99,7 +100,7 @@ public class MainFrame extends JFrame {
         // Khởi tạo các Panel[cite: 12]
 //        slotPanel       = new SlotPanel();
 //        checkPanel      = new CheckInOutPanel(() -> slotPanel.loadSlots()); 
-        lotPanel        = new ParkingLotPanel();
+        lotPanel        = new ParkingInfoPanel();
         floorPanel      = new FloorPanel();
         pricePanel      = new PriceConfigPanel();
         staffPanel      = new StaffPanel();
@@ -107,10 +108,11 @@ public class MainFrame extends JFrame {
         // Khởi tạo Panel mới
         slotManagePanel = new SlotManagementPanel();
 //        subPanel        = new MonthlySubscriptionPanel();
-
+        slotVisualPanel = new SlotVisualPanel(); // THÊM DÒNG NÀY
         // Add vào CardLayout
 //        contentArea.add(checkPanel, "checkin");
 //        contentArea.add(slotPanel,  "slots");
+        contentArea.add(slotVisualPanel, "slots"); // THÊM DÒNG NÀY
         contentArea.add(slotManagePanel, "slot_manage"); // Mới
         contentArea.add(lotPanel,   "lots");
         contentArea.add(floorPanel, "floors");
@@ -132,9 +134,9 @@ public class MainFrame extends JFrame {
         });
         
 //        // Làm mới dữ liệu Sơ đồ xe mỗi khi click vào Tab này[cite: 12]
-//        if ("slots".equals(key)) {
-//            slotPanel.loadSlots(); 
-//        }
+        if ("slots".equals(key)) {
+        slotVisualPanel.loadMap(); 
+    }
     }
 
     private JButton navButton(String label) {

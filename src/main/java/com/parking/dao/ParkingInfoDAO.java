@@ -12,7 +12,7 @@ public class ParkingInfoDAO {
 
     // Lấy thông tin bãi xe (thường là bản ghi đầu tiên - id = 1)
     public ParkingInfo getParkingInfo() {
-        String sql = "SELECT * FROM parking_info LIMIT 1";
+        String sql = "SELECT * FROM Parking_Info LIMIT 1";
         
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
@@ -41,10 +41,10 @@ public class ParkingInfoDAO {
         String sql;
         if (existingInfo == null) {
             // Chưa có thì Insert
-            sql = "INSERT INTO parking_info (name, address, hotline, capacity) VALUES (?, ?, ?, ?)";
+            sql = "INSERT INTO Parking_Info (name, address, hotline, capacity) VALUES (?, ?, ?, ?)";
         } else {
             // Đã có thì Update bản ghi đó
-            sql = "UPDATE parking_info SET name = ?, address = ?, hotline = ?, capacity = ? WHERE id = ?";
+            sql = "UPDATE Parking_Info SET name = ?, address = ?, hotline = ?, capacity = ? WHERE id = ?";
         }
 
         try (Connection conn = DBConnection.getConnection();

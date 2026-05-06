@@ -87,4 +87,28 @@ public class PriceConfigDAO {
         }
         return false;
     }
+    public com.parking.entity.PriceConfig getConfigByType(com.parking.enums.VehicleType type) {
+        String sql = "SELECT * FROM price_config WHERE vehicle_type = ?";
+        try (java.sql.Connection conn = DBConnection.getConnection();
+             java.sql.PreparedStatement ps = conn.prepareStatement(sql)) {
+             
+            ps.setString(1, type.name());
+            
+            try (java.sql.ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    com.parking.entity.PriceConfig config = new com.parking.entity.PriceConfig();
+                    config.setId(rs.getLong("id"));
+                    config.setVehicleType(com.parking.enums.VehicleType.valueOf(rs.getString("vehicle_type")));
+                    config.setBaseFee(rs.getBigDecimal("base_fee"));
+                    config.setExtraFeePerHour(rs.getBigDecimal("extra_fee_per_hour"));
+                    config.setMonthlyPrice(rs.getBigDecimal("monthly_price"));
+                    return config;
+                }
+            }
+        } catch (java.sql.SQLException e) {
+            System.err.println("Lỗi khi lấy cấu hình giá theo loại xe:");
+            e.printStackTrace();
+        }
+        return null; // Trả về null nếu chưa cấu hình giá cho loại xe này
+    }
 }
