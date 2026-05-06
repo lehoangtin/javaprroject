@@ -1,7 +1,5 @@
 package com.parking.gui;
 
-import com.parking.gui.Theme; // Đã bỏ comment để nhận diện màu sắc
-
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDateTime;
@@ -13,12 +11,17 @@ public class MainFrame extends JFrame {
     private JPanel contentArea;
     private CardLayout cards;
     
-    private CheckInOutPanel checkPanel;
-    private SlotPanel slotPanel;
+    // Các Panel cũ[cite: 12]
+//    private CheckInOutPanel checkPanel;
+//    private SlotPanel slotPanel; // Sơ đồ UI do Thịnh/Phi làm
     private ParkingLotPanel lotPanel;
     private FloorPanel floorPanel;
     private PriceConfigPanel pricePanel;
     private StaffPanel staffPanel;
+    
+    // Bổ sung các Panel mới của Tín
+    private SlotManagementPanel slotManagePanel; 
+//    private MonthlySubscriptionPanel subPanel;
 
     private final List<JButton> navBtns = new ArrayList<>();
     private JLabel lbClock;
@@ -66,14 +69,16 @@ public class MainFrame extends JFrame {
         sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
         sidebar.setBorder(BorderFactory.createEmptyBorder(12, 8, 12, 8));
 
-        // Cập nhật Menu theo đúng các chức năng đã làm
+        // Cập nhật Menu đầy đủ các chức năng[cite: 12]
         String[][] items = {
-            {"checkin",    "🚗  Vào / Ra"},
-            {"slots",      "🅿  Sơ đồ xe"},
-            {"lots",       "🏢  Quản lý Bãi xe"},
-            {"floors",     "🏢  Quản lý Tầng"},
-            {"price",      "💰  Biểu giá"},
-            {"staff",      "👥  Nhân sự"}
+            {"checkin",       "🚗  Vào / Ra"},
+            {"slots",         "🅿  Sơ đồ xe"},
+            {"slot_manage",   "⚙  Quản lý chỗ đỗ"}, // Mới thêm
+            {"lots",          "🏢  Quản lý Bãi xe"},
+            {"floors",        "🏢  Quản lý Tầng"},
+            {"price",         "💰  Biểu giá"},
+            {"sub",           "💳  Vé tháng"},       // Mới thêm
+            {"staff",         "👥  Nhân sự"}
         };
         
         for (String[] item : items) {
@@ -91,24 +96,31 @@ public class MainFrame extends JFrame {
         contentArea = new JPanel(cards);
         contentArea.setBackground(Theme.BG_SECONDARY);
 
-        // Khởi tạo các Panel
-        slotPanel   = new SlotPanel();
-        // Truyền hàm callback để CheckInPanel gọi loadSlots() cập nhật lại màu sắc bãi xe
-        checkPanel  = new CheckInOutPanel(() -> slotPanel.loadSlots()); 
-        lotPanel    = new ParkingLotPanel();
-        floorPanel  = new FloorPanel();
-        pricePanel  = new PriceConfigPanel();
-        staffPanel  = new StaffPanel();
+        // Khởi tạo các Panel[cite: 12]
+//        slotPanel       = new SlotPanel();
+//        checkPanel      = new CheckInOutPanel(() -> slotPanel.loadSlots()); 
+        lotPanel        = new ParkingLotPanel();
+        floorPanel      = new FloorPanel();
+        pricePanel      = new PriceConfigPanel();
+        staffPanel      = new StaffPanel();
+        
+        // Khởi tạo Panel mới
+        slotManagePanel = new SlotManagementPanel();
+//        subPanel        = new MonthlySubscriptionPanel();
 
-        contentArea.add(checkPanel, "checkin");
-        contentArea.add(slotPanel,  "slots");
+        // Add vào CardLayout
+//        contentArea.add(checkPanel, "checkin");
+//        contentArea.add(slotPanel,  "slots");
+        contentArea.add(slotManagePanel, "slot_manage"); // Mới
         contentArea.add(lotPanel,   "lots");
         contentArea.add(floorPanel, "floors");
         contentArea.add(pricePanel, "price");
+//        contentArea.add(subPanel,   "sub");             // Mới
         contentArea.add(staffPanel, "staff");
+        
         add(contentArea, BorderLayout.CENTER);
 
-        switchTo("checkin"); // Mặc định mở trang Nhận/Trả xe
+        switchTo("checkin"); // Mặc định mở trang Nhận/Trả xe[cite: 12]
     }
 
     private void switchTo(String key) {
@@ -119,10 +131,10 @@ public class MainFrame extends JFrame {
             b.setForeground(active ? Color.WHITE : new Color(180, 178, 170));
         });
         
-        // Làm mới dữ liệu Sơ đồ xe mỗi khi click vào Tab này
-        if ("slots".equals(key)) {
-            slotPanel.loadSlots(); 
-        }
+//        // Làm mới dữ liệu Sơ đồ xe mỗi khi click vào Tab này[cite: 12]
+//        if ("slots".equals(key)) {
+//            slotPanel.loadSlots(); 
+//        }
     }
 
     private JButton navButton(String label) {
