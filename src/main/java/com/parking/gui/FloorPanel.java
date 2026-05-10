@@ -14,6 +14,7 @@ public class FloorPanel extends JPanel {
     private DefaultTableModel tableModel;
     private JTextField txtFloorNumber;
     private JTextField txtDescription;
+    private JTextField txtCapacity; // Đã thêm biến txtCapacity
     private JButton btnAdd, btnUpdate, btnDelete, btnClear;
     private FloorBLL bll;
     private Long selectedFloorId = null;
@@ -36,7 +37,8 @@ public class FloorPanel extends JPanel {
         add(lblTitle, BorderLayout.NORTH);
 
         // --- Bảng hiển thị dữ liệu ---
-        String[] columns = {"ID", "Số Tầng", "Mô Tả"};
+        // Cập nhật mảng columns thêm "Sức chứa"
+        String[] columns = {"ID", "Số Tầng", "Mô Tả", "Sức chứa"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) { return false; }
@@ -65,8 +67,8 @@ public class FloorPanel extends JPanel {
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)
         ));
 
-        // Form nhập liệu
-        JPanel formPanel = new JPanel(new GridLayout(1, 4, 15, 15));
+        // Form nhập liệu: Chuyển thành GridLayout(2, 4) để chứa đủ các field
+        JPanel formPanel = new JPanel(new GridLayout(2, 4, 15, 15));
         formPanel.setBackground(Theme.BG_PRIMARY);
         
         formPanel.add(createLabel("Số tầng (VD: 1, -1):"));
@@ -77,13 +79,21 @@ public class FloorPanel extends JPanel {
         txtDescription = createTextField();
         formPanel.add(txtDescription);
 
+        formPanel.add(createLabel("Sức chứa (Capacity):"));
+        txtCapacity = createTextField();
+        formPanel.add(txtCapacity);
+
+        // Thêm 2 panel rỗng để lấp đầy ô trống trong GridLayout
+        formPanel.add(new JLabel(""));
+        formPanel.add(new JLabel(""));
+
         bottomPanel.add(formPanel, BorderLayout.CENTER);
 
         // Panel chứa các nút
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         btnPanel.setBackground(Theme.BG_PRIMARY);
 
-     // Khởi tạo và thiết lập trực tiếp cho từng nút
+        // Khởi tạo và thiết lập trực tiếp cho từng nút
         btnAdd = new JButton("Thêm");
         btnAdd.setFont(Theme.FONT_TITLE);
         btnAdd.setBackground(Theme.ACCENT_TEAL);
@@ -141,6 +151,10 @@ public class FloorPanel extends JPanel {
                 
                 Object descObj = tableModel.getValueAt(selectedRow, 2);
                 txtDescription.setText(descObj != null ? descObj.toString() : "");
+
+                // Lấy giá trị sức chứa
+                Object capObj = tableModel.getValueAt(selectedRow, 3);
+                txtCapacity.setText(capObj != null ? capObj.toString() : "");
             }
         });
 
@@ -169,18 +183,6 @@ public class FloorPanel extends JPanel {
         return textField;
     }
 
-    private JButton createButton(String text, Color bgColor) {
-        JButton btn = new JButton(text);
-        btn.setFont(Theme.FONT_TITLE);
-        btn.setBackground(bgColor);
-        btn.setForeground(Color.WHITE);
-        btn.setFocusPainted(false);
-        btn.setBorderPainted(false);
-        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btn.setPreferredSize(new Dimension(100, 35));
-        return btn;
-    }
-
     // Logic xử lý
     private void loadData() {
         tableModel.setRowCount(0);
@@ -189,7 +191,8 @@ public class FloorPanel extends JPanel {
             Object[] row = {
                 floor.getId(),
                 floor.getFloorNumber(),
-                floor.getDescription()
+                floor.getDescription(),
+                floor.getCapacity() // Hiển thị capacity
             };
             tableModel.addRow(row);
         }
@@ -200,14 +203,17 @@ public class FloorPanel extends JPanel {
         table.clearSelection();
         txtFloorNumber.setText("");
         txtDescription.setText("");
+        txtCapacity.setText("");
     }
 
     private void addAction() {
         try {
             Integer floorNumber = Integer.parseInt(txtFloorNumber.getText().trim());
             String desc = txtDescription.getText().trim();
+            Integer capacity = txtCapacity.getText().trim().isEmpty() ? null : Integer.parseInt(txtCapacity.getText().trim());
 
-            if (bll.addFloor(floorNumber, desc)) {
+            // Đã cập nhật hàm bll.addFloor để nhận thêm tham số capacity
+            if (bll.addFloor(floorNumber, desc, capacity)) {
                 JOptionPane.showMessageDialog(this, "Thêm tầng thành công!");
                 loadData();
                 clearForm();
@@ -215,7 +221,7 @@ public class FloorPanel extends JPanel {
                 JOptionPane.showMessageDialog(this, "Thêm thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Số tầng phải là số nguyên (VD: 1, 2, -1)!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Số tầng và Sức chứa phải là số nguyên!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -227,8 +233,10 @@ public class FloorPanel extends JPanel {
         try {
             Integer floorNumber = Integer.parseInt(txtFloorNumber.getText().trim());
             String desc = txtDescription.getText().trim();
+            Integer capacity = txtCapacity.getText().trim().isEmpty() ? null : Integer.parseInt(txtCapacity.getText().trim());
 
-            if (bll.updateFloor(selectedFloorId, floorNumber, desc)) {
+            // Đã cập nhật hàm bll.updateFloor để nhận thêm tham số capacity
+            if (bll.updateFloor(selectedFloorId, floorNumber, desc, capacity)) {
                 JOptionPane.showMessageDialog(this, "Cập nhật thành công!");
                 loadData();
                 clearForm();
@@ -236,7 +244,7 @@ public class FloorPanel extends JPanel {
                 JOptionPane.showMessageDialog(this, "Cập nhật thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Số tầng phải là số nguyên!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Số tầng và Sức chứa phải là số nguyên!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
 

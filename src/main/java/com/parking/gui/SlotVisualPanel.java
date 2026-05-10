@@ -7,7 +7,6 @@ import com.parking.entity.Slot;
 import com.parking.enums.SlotStatus;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.util.List;
 
@@ -43,6 +42,7 @@ public class SlotVisualPanel extends JPanel {
         legendPanel.setBackground(Theme.BG_SECONDARY);
         legendPanel.add(createLegendItem("Trống", Theme.SLOT_EMPTY, Theme.SLOT_BORDER_EMPTY));
         legendPanel.add(createLegendItem("Đang đỗ", Theme.SLOT_TAKEN, Theme.SLOT_BORDER_TAKEN));
+        legendPanel.add(createLegendItem("Bảo trì", Color.LIGHT_GRAY, Color.GRAY));
         add(legendPanel, BorderLayout.SOUTH);
 
         // Nạp dữ liệu vẽ sơ đồ
@@ -55,31 +55,50 @@ public class SlotVisualPanel extends JPanel {
         List<Floor> floors = floorBLL.getAllFloors();
 
         for (Floor floor : floors) {
-            // Tạo 1 Panel cho mỗi tầng
-            // Dùng FlowLayout để các ô xe tự rớt dòng khi hết chỗ (Wrap)
-            JPanel floorMapPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 15));
+            // Tạo 1 Panel chính cho tầng (xếp dọc các hàng)
+            JPanel floorMapPanel = new JPanel();
+            floorMapPanel.setLayout(new BoxLayout(floorMapPanel, BoxLayout.Y_AXIS));
             floorMapPanel.setBackground(Theme.BG_PRIMARY);
-            floorMapPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+            floorMapPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20));
 
             // Lấy danh sách chỗ đỗ của tầng này
             List<Slot> slots = slotBLL.getSlotsByFloor(floor.getId());
             
-            for (Slot slot : slots) {
-                // Tạo một ô đỗ xe (Nút bấm)
-                JButton btnSlot = createSlotButton(slot);
-                floorMapPanel.add(btnSlot);
+            JPanel currentRowPanel = null;
+            for (int i = 0; i < slots.size(); i++) {
+                // Cứ sau mỗi 10 slot, tạo một Panel hàng ngang mới
+                if (i % 10 == 0) {
+                    currentRowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 15));
+                    currentRowPanel.setBackground(Theme.BG_PRIMARY);
+                    currentRowPanel.setAlignmentX(Component.LEFT_ALIGNMENT); // Căn trái cho hàng
+                    floorMapPanel.add(currentRowPanel);
+                }
+                
+                // Tạo một ô đỗ xe (Nút bấm) và thêm vào hàng hiện tại
+                JButton btnSlot = createSlotButton(slots.get(i));
+                currentRowPanel.add(btnSlot);
             }
 
-            // Gắn Panel tầng này vào Tab
-            // Ví dụ: Tầng 1, Tầng 2
-         // Hiển thị trực tiếp "Tầng 1", "Tầng 2"...
+            // --- XỬ LÝ TIÊU ĐỀ TAB (HIỂN THỊ CAPACITY) ---
             String tabTitle = "Tầng " + floor.getFloorNumber();
-             if (floor.getDescription() != null && !floor.getDescription().trim().isEmpty()) {
-                 tabTitle += " (" + floor.getDescription() + ")";
-             }
+            
+            // Nếu có nhập Capacity thì hiển thị ra
+            if (floor.getCapacity() != null) {
+                tabTitle += " (Capacity:" + floor.getCapacity() + ")";
+            }
+            
+            // Nếu có mô tả thêm thì gắn vào sau cùng
+            if (floor.getDescription() != null && !floor.getDescription().trim().isEmpty()) {
+                 tabTitle += " - " + floor.getDescription();
+            }
                                
-            // Thêm thanh cuộn đề phòng tầng có quá nhiều xe
-            JScrollPane scrollPane = new JScrollPane(floorMapPanel);
+            // Mẹo: Bọc floorMapPanel vào vùng NORTH của BorderLayout để các hàng không bị giãn cách dọc khi cửa sổ quá cao
+            JPanel wrapPanel = new JPanel(new BorderLayout());
+            wrapPanel.setBackground(Theme.BG_PRIMARY);
+            wrapPanel.add(floorMapPanel, BorderLayout.NORTH);
+
+            // Thêm thanh cuộn
+            JScrollPane scrollPane = new JScrollPane(wrapPanel);
             scrollPane.setBorder(null);
             
             tabbedPane.addTab(tabTitle, scrollPane);

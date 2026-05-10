@@ -1,5 +1,7 @@
 package com.parking.gui;
 
+import com.parking.utils.Session; // THÊM DÒNG NÀY ĐỂ LẤY THÔNG TIN SESSION
+
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDateTime;
@@ -11,7 +13,7 @@ public class MainFrame extends JFrame {
     private JPanel contentArea;
     private CardLayout cards;
     
-    // Các Panel cũ[cite: 12]
+    // Các Panel cũ
     private CheckInOutPanel checkPanel;
 //    private SlotPanel slotPanel; // Sơ đồ UI do Thịnh/Phi làm
     private ParkingInfoPanel lotPanel;
@@ -53,13 +55,36 @@ public class MainFrame extends JFrame {
 
         JPanel right = new JPanel(new FlowLayout(FlowLayout.RIGHT, 12, 10));
         right.setOpaque(false);
+        
+        // --- BẮT ĐẦU THÊM MỚI: HIỂN THỊ TÊN & NÚT ĐĂNG XUẤT ---
+        String userName = (Session.currentUser != null) ? Session.currentUser.getFullName() : "Admin";
+        JLabel lblUser = new JLabel("👤 Xin chào, " + userName);
+        lblUser.setFont(Theme.FONT_BODY);
+        lblUser.setForeground(Theme.TEXT_PRIMARY);
+
+        JButton btnLogout = new JButton("Đăng Xuất");
+        btnLogout.setFont(Theme.FONT_SMALL);
+        btnLogout.setBackground(Theme.ACCENT_RED);
+        btnLogout.setForeground(Color.WHITE);
+        btnLogout.setFocusPainted(false);
+        btnLogout.setBorderPainted(false);
+        btnLogout.setOpaque(true);
+        btnLogout.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnLogout.addActionListener(e -> handleLogout());
+        // --- KẾT THÚC THÊM MỚI ---
+
         JLabel badge = new JLabel("● Live");
         badge.setFont(Theme.FONT_SMALL);
         badge.setForeground(Theme.ACCENT_GREEN);
         lbClock = new JLabel();
         lbClock.setFont(Theme.FONT_SMALL);
         lbClock.setForeground(Theme.TEXT_MUTED);
-        right.add(badge); right.add(lbClock);
+        
+        right.add(lblUser);     // THÊM VÀO PANEL
+        right.add(badge); 
+        right.add(lbClock);
+        right.add(btnLogout);   // THÊM VÀO PANEL
+        
         topBar.add(right, BorderLayout.EAST);
         add(topBar, BorderLayout.NORTH);
 
@@ -70,7 +95,7 @@ public class MainFrame extends JFrame {
         sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
         sidebar.setBorder(BorderFactory.createEmptyBorder(12, 8, 12, 8));
 
-        // Cập nhật Menu đầy đủ các chức năng[cite: 12]
+        // Cập nhật Menu đầy đủ các chức năng
         String[][] items = {
             {"checkin",       "🚗  Vào / Ra"},
             {"slots",         "🅿  Sơ đồ xe"},
@@ -97,7 +122,7 @@ public class MainFrame extends JFrame {
         contentArea = new JPanel(cards);
         contentArea.setBackground(Theme.BG_SECONDARY);
         
-        // Khởi tạo các Panel[cite: 12]
+        // Khởi tạo các Panel
 //        slotPanel       = new SlotPanel();
 //       checkPanel      = new CheckInOutPanel(() -> slotPanel.loadSlots()); 
         checkPanel 		= new CheckInOutPanel();
@@ -110,6 +135,7 @@ public class MainFrame extends JFrame {
         slotManagePanel = new SlotManagementPanel();
 //        subPanel        = new MonthlySubscriptionPanel();
         slotVisualPanel = new SlotVisualPanel(); // THÊM DÒNG NÀY
+        
         // Add vào CardLayout
         contentArea.add(checkPanel, "checkin");
 //        contentArea.add(slotPanel,  "slots");
@@ -123,7 +149,7 @@ public class MainFrame extends JFrame {
         
         add(contentArea, BorderLayout.CENTER);
 
-        switchTo("checkin"); // Mặc định mở trang Nhận/Trả xe[cite: 12]
+        switchTo("checkin"); // Mặc định mở trang Nhận/Trả xe
     }
 
     private void switchTo(String key) {
@@ -134,7 +160,7 @@ public class MainFrame extends JFrame {
             b.setForeground(active ? Color.WHITE : new Color(180, 178, 170));
         });
         
-//        // Làm mới dữ liệu Sơ đồ xe mỗi khi click vào Tab này[cite: 12]
+        // Làm mới dữ liệu Sơ đồ xe mỗi khi click vào Tab này
         if ("slots".equals(key)) {
         	slotVisualPanel.loadMap(); 
         }
@@ -162,6 +188,29 @@ public class MainFrame extends JFrame {
         t.start();
         lbClock.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
     }
+
+    // --- BẮT ĐẦU THÊM MỚI: HÀM ĐĂNG XUẤT ---
+    private void handleLogout() {
+        int confirm = JOptionPane.showConfirmDialog(this, 
+                "Bạn có chắc chắn muốn đăng xuất?", 
+                "Xác nhận", 
+                JOptionPane.YES_NO_OPTION);
+                
+        if (confirm == JOptionPane.YES_OPTION) {
+            Session.currentUser = null;
+            this.dispose();
+            SwingUtilities.invokeLater(() -> {
+                LoginDialog login = new LoginDialog();
+                login.setVisible(true);
+                if (login.isSucceeded()) {
+                    new MainFrame().setVisible(true);
+                } else {
+                    System.exit(0);
+                }
+            });
+        }
+    }
+    // --- KẾT THÚC THÊM MỚI ---
 
     // ── Entry point ───────────────────────────────────────────
     public static void main(String[] args) {

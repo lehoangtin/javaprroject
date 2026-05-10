@@ -26,6 +26,7 @@ public class FloorDAO {
                 floor.setId(rs.getLong("id"));
                 floor.setFloorNumber(rs.getInt("floor_number"));
                 floor.setDescription(rs.getString("description"));
+                floor.setCapacity(rs.getInt("capacity"));
                 list.add(floor);
             }
         } catch (SQLException e) {
@@ -36,13 +37,17 @@ public class FloorDAO {
 
     // [CREATE] Thêm tầng mới
     public boolean addFloor(Floor floor) {
-        String sql = "INSERT INTO floor (floor_number, description) VALUES (?, ?)";
-        try (Connection conn = DBConnection.getConnection();
+    	String sql = "INSERT INTO floor (floor_number, description, capacity) VALUES (?, ?, ?)";
+    	try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
              
             ps.setInt(1, floor.getFloorNumber());
             ps.setString(2, floor.getDescription());
-            
+            if (floor.getCapacity() != null) {
+                ps.setInt(3, floor.getCapacity());
+            } else {
+                ps.setNull(3, java.sql.Types.INTEGER);
+            }
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -52,13 +57,22 @@ public class FloorDAO {
 
     // [UPDATE] Cập nhật thông tin tầng
     public boolean updateFloor(Floor floor) {
-        String sql = "UPDATE floor SET floor_number = ?, description = ? WHERE id = ?";
+        // Cập nhật câu lệnh SQL thêm cột capacity
+        String sql = "UPDATE floor SET floor_number = ?, description = ?, capacity = ? WHERE id = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
              
             ps.setInt(1, floor.getFloorNumber());
             ps.setString(2, floor.getDescription());
-            ps.setLong(3, floor.getId());
+            
+            // Xử lý null cho capacity đề phòng trường hợp không nhập
+            if (floor.getCapacity() != null) {
+                ps.setInt(3, floor.getCapacity());
+            } else {
+                ps.setNull(3, java.sql.Types.INTEGER);
+            }
+            
+            ps.setLong(4, floor.getId());
             
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {

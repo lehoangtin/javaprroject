@@ -4,7 +4,7 @@ public class Floor {
     private Long id;
     private Integer floorNumber; 
     private String description;
-
+    private Integer capacity; // THÊM DÒNG NÀY
     public Floor() {}
 
 	public Long getId() {
@@ -21,6 +21,14 @@ public class Floor {
 
 	public void setFloorNumber(Integer floorNumber) {
 		this.floorNumber = floorNumber;
+	}
+
+	public Integer getCapacity() {
+		return capacity;
+	}
+
+	public void setCapacity(Integer capacity) {
+		this.capacity = capacity;
 	}
 
 	public String getDescription() {

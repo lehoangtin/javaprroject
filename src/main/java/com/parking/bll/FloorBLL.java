@@ -16,23 +16,25 @@ public class FloorBLL {
         return floorDAO.getAllFloors();
     }
 
-    public boolean addFloor(Integer floorNumber, String description) {
+    public boolean addFloor(Integer floorNumber, String description, Integer capacity) {
         if (floorNumber == null) return false;
         
         Floor floor = new Floor();
         floor.setFloorNumber(floorNumber);
         floor.setDescription(description);
+        floor.setCapacity(capacity); // Gán thêm capacity
         
         return floorDAO.addFloor(floor);
     }
 
-    public boolean updateFloor(Long id, Integer floorNumber, String description) {
+    public boolean updateFloor(Long id, Integer floorNumber, String description, Integer capacity) {
         if (floorNumber == null) return false;
 
         Floor floor = new Floor();
         floor.setId(id);
         floor.setFloorNumber(floorNumber);
         floor.setDescription(description);
+        floor.setCapacity(capacity); // Gán thêm capacity
         
         return floorDAO.updateFloor(floor);
     }
