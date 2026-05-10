@@ -12,7 +12,7 @@ public class MainFrame extends JFrame {
     private CardLayout cards;
     
     // Các Panel cũ[cite: 12]
-//    private CheckInOutPanel checkPanel;
+    private CheckInOutPanel checkPanel;
 //    private SlotPanel slotPanel; // Sơ đồ UI do Thịnh/Phi làm
     private ParkingInfoPanel lotPanel;
     private FloorPanel floorPanel;
@@ -96,10 +96,11 @@ public class MainFrame extends JFrame {
         cards = new CardLayout();
         contentArea = new JPanel(cards);
         contentArea.setBackground(Theme.BG_SECONDARY);
-
+        
         // Khởi tạo các Panel[cite: 12]
 //        slotPanel       = new SlotPanel();
-//        checkPanel      = new CheckInOutPanel(() -> slotPanel.loadSlots()); 
+//       checkPanel      = new CheckInOutPanel(() -> slotPanel.loadSlots()); 
+        checkPanel 		= new CheckInOutPanel();
         lotPanel        = new ParkingInfoPanel();
         floorPanel      = new FloorPanel();
         pricePanel      = new PriceConfigPanel();
@@ -110,7 +111,7 @@ public class MainFrame extends JFrame {
 //        subPanel        = new MonthlySubscriptionPanel();
         slotVisualPanel = new SlotVisualPanel(); // THÊM DÒNG NÀY
         // Add vào CardLayout
-//        contentArea.add(checkPanel, "checkin");
+        contentArea.add(checkPanel, "checkin");
 //        contentArea.add(slotPanel,  "slots");
         contentArea.add(slotVisualPanel, "slots"); // THÊM DÒNG NÀY
         contentArea.add(slotManagePanel, "slot_manage"); // Mới
@@ -135,8 +136,11 @@ public class MainFrame extends JFrame {
         
 //        // Làm mới dữ liệu Sơ đồ xe mỗi khi click vào Tab này[cite: 12]
         if ("slots".equals(key)) {
-        slotVisualPanel.loadMap(); 
-    }
+        	slotVisualPanel.loadMap(); 
+        }
+        if ("checkin".equals(key)) {
+            checkPanel.loadEmptySlots();
+        }
     }
 
     private JButton navButton(String label) {
