@@ -171,6 +171,8 @@ public class MainFrame extends JFrame {
         btn.setFocusPainted(false);
         btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
         btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        btn.setContentAreaFilled(false);
+        btn.setOpaque(true);
         return btn;
     }
 

@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
         System.out.println(">>> 1. Đang khởi động hệ thống..."); 
         try { 
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (Exception ignored) {}
 
         SwingUtilities.invokeLater(() -> {
