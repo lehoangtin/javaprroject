@@ -187,6 +187,7 @@ public class MonthlySubscriptionPanel extends JPanel {
 
     private JButton createButton(String text, Color bg) {
         JButton btn = new JButton(text);
+        btn.setUI(new javax.swing.plaf.basic.BasicButtonUI());
         btn.setFont(Theme.FONT_TITLE);
         btn.setBackground(bg);
         btn.setForeground(Color.WHITE);
@@ -203,7 +204,6 @@ public class MonthlySubscriptionPanel extends JPanel {
         List<MonthlySubscription> list = bll.getAllSubscriptions();
         
         for (MonthlySubscription sub : list) {
-            // Lấy thông tin Phương Tiện từ bảng Vehicle để map ra Table
             Vehicle v = vehicleDAO.findById(sub.getVehicleId());
             String plate = (v != null) ? v.getLicensePlate() : "N/A";
             String vType = (v != null) ? v.getVehicleType().name() : "N/A";
