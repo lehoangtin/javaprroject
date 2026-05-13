@@ -10,7 +10,6 @@ public class ParkingInfoPanel extends JPanel {
     private JTextField txtName;
     private JTextField txtAddress;
     private JTextField txtHotline;
-    private JTextField txtCapacity;
     
     // Khai báo 2 nút
     private JButton btnEdit;
@@ -59,11 +58,7 @@ public class ParkingInfoPanel extends JPanel {
         formPanel.add(createLabel("Số Hotline:"));
         txtHotline = createTextField();
         formPanel.add(txtHotline);
-
-        formPanel.add(createLabel("Sức chứa tối đa (xe):"));
-        txtCapacity = createTextField();
-        formPanel.add(txtCapacity);
-
+       
         cardPanel.add(formPanel, BorderLayout.CENTER);
 
         // --- Khu vực chứa nút bấm ---
@@ -127,10 +122,9 @@ public class ParkingInfoPanel extends JPanel {
         txtName.setEnabled(isEnabled);
         txtAddress.setEnabled(isEnabled);
         txtHotline.setEnabled(isEnabled);
-        txtCapacity.setEnabled(isEnabled);
         
-        btnSave.setEnabled(isEnabled);     // Đang mở form thì nút Lưu bật
-        btnEdit.setEnabled(!isEnabled);    // Đang mở form thì nút Edit tắt
+        btnSave.setEnabled(isEnabled);     
+        btnEdit.setEnabled(!isEnabled);   
     }
 
     // --- Logic xử lý ---
@@ -140,7 +134,6 @@ public class ParkingInfoPanel extends JPanel {
             txtName.setText(info.getName() != null ? info.getName() : "");
             txtAddress.setText(info.getAddress() != null ? info.getAddress() : "");
             txtHotline.setText(info.getHotline() != null ? info.getHotline() : "");
-            txtCapacity.setText(info.getCapacity() != null ? String.valueOf(info.getCapacity()) : "");
         }
     }
 
@@ -149,13 +142,12 @@ public class ParkingInfoPanel extends JPanel {
             String name = txtName.getText().trim();
             String address = txtAddress.getText().trim();
             String hotline = txtHotline.getText().trim();
-            Integer capacity = Integer.parseInt(txtCapacity.getText().trim());
 
-            if (bll.saveInfo(name, address, hotline, capacity)) {
+            if (bll.saveInfo(name, address, hotline)) {
                 JOptionPane.showMessageDialog(this, "Đã lưu thông tin bãi xe thành công!");
                 setFieldsEnabled(false); // Lưu thành công thì khóa form lại
             } else {
-                JOptionPane.showMessageDialog(this, "Lưu thất bại. Vui lòng kiểm tra lại thông tin (Tên và Sức chứa không được trống)!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Lưu thất bại. Vui lòng kiểm tra lại thông tin", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Sức chứa phải là một số nguyên hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);

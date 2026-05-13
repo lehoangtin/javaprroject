@@ -37,7 +37,7 @@ public class SlotManagementPanel extends JPanel {
         add(lblTitle, BorderLayout.NORTH);
 
         tableModel = new DefaultTableModel(new String[]{"ID", "Mã Tầng", "Số Hiệu", "Loại Xe", "Trạng Thái"}, 0) {
-            @Override public boolean isCellEditable(int row, int column) { return false; }
+            public boolean isCellEditable(int row, int column) { return false; }
         };
         table = new JTable(tableModel);
         table.setFont(Theme.FONT_BODY);
@@ -67,6 +67,17 @@ public class SlotManagementPanel extends JPanel {
 
         formPanel.add(new JLabel("Trạng thái:"));
         cbStatus = new JComboBox<>(SlotStatus.values());
+        
+        cbStatus.setRenderer(new DefaultListCellRenderer() {
+            public java.awt.Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (value instanceof com.parking.enums.SlotStatus) {
+                    setText(((com.parking.enums.SlotStatus) value).getDisplayName()); // Gọi getDisplayName()
+                }
+                return this;
+            }
+        });
+        
         formPanel.add(cbStatus);
 
         bottomPanel.add(formPanel, BorderLayout.CENTER);
@@ -74,14 +85,13 @@ public class SlotManagementPanel extends JPanel {
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         btnPanel.setBackground(Theme.BG_PRIMARY);
         
-     // Khởi tạo và thiết lập trực tiếp cho từng nút
         btnAdd = new JButton("Thêm");
         btnAdd.setFont(Theme.FONT_TITLE);
         btnAdd.setBackground(Theme.ACCENT_TEAL);
         btnAdd.setForeground(Color.WHITE);
         btnAdd.setFocusPainted(false);
-        btnAdd.setBorderPainted(false); // Bắt buộc cho macOS
-        btnAdd.setOpaque(true);         // Bắt buộc cho macOS
+        btnAdd.setBorderPainted(false); 
+        btnAdd.setOpaque(true);         
         btnAdd.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnAdd.setPreferredSize(new Dimension(130, 35));
 
@@ -107,7 +117,7 @@ public class SlotManagementPanel extends JPanel {
 
         btnClear = new JButton("Làm mới");
         btnClear.setFont(Theme.FONT_TITLE);
-        btnClear.setBackground(Theme.TEXT_MUTED); // Đồng bộ màu xám
+        btnClear.setBackground(Theme.TEXT_MUTED); 
         btnClear.setForeground(Color.WHITE);
         btnClear.setFocusPainted(false);
         btnClear.setBorderPainted(false);
@@ -118,8 +128,6 @@ public class SlotManagementPanel extends JPanel {
         btnPanel.add(btnAdd); btnPanel.add(btnUpdate); btnPanel.add(btnDelete); btnPanel.add(btnClear);
         bottomPanel.add(btnPanel, BorderLayout.SOUTH);
         add(bottomPanel, BorderLayout.SOUTH);
-
-        // Events
         table.getSelectionModel().addListSelectionListener(e -> {
             if (table.getSelectedRow() >= 0) {
                 int r = table.getSelectedRow();
@@ -127,7 +135,15 @@ public class SlotManagementPanel extends JPanel {
                 txtFloorId.setText(tableModel.getValueAt(r, 1).toString());
                 txtSlotNumber.setText(tableModel.getValueAt(r, 2).toString());
                 cbVehicleType.setSelectedItem(VehicleType.valueOf(tableModel.getValueAt(r, 3).toString()));
-                cbStatus.setSelectedItem(SlotStatus.valueOf(tableModel.getValueAt(r, 4).toString()));
+                
+                // Cập nhật cách đọc Enum khi click vào bảng
+                String statusStr = tableModel.getValueAt(r, 4).toString();
+                for (SlotStatus status : SlotStatus.values()) {
+                    if (status.getDisplayName().equals(statusStr)) {
+                        cbStatus.setSelectedItem(status);
+                        break;
+                    }
+                }
             }
         });
 
@@ -172,7 +188,7 @@ public class SlotManagementPanel extends JPanel {
     private void loadData() {
         tableModel.setRowCount(0);
         for (Slot s : bll.getAllSlots()) {
-            tableModel.addRow(new Object[]{s.getId(), s.getFloorId(), s.getSlotNumber(), s.getVehicleType(), s.getStatus()});
+            tableModel.addRow(new Object[]{s.getId(), s.getFloorId(), s.getSlotNumber(), s.getVehicleType(), s.getStatus().getDisplayName()});
         }
     }
 

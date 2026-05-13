@@ -49,15 +49,7 @@ public class SlotBLL {
                 }
                 break;
             }
-        }
-
-        // --- 3. KIỂM TRA SỨC CHỨA TỐI ĐA CỦA TOÀN BỘ BÃI XE ---
-        ParkingInfo info = infoDao.getParkingInfo();
-        if (info != null && info.getCapacity() != null) {
-            if (allSlots.size() >= info.getCapacity()) {
-                return "Hệ thống từ chối: Toàn bộ bãi xe đã đạt sức chứa tối đa (" + info.getCapacity() + " chỗ)!";
-            }
-        }
+        }  
 
         // --- 4. TIẾN HÀNH LƯU XUỐNG DB ---
         Slot newSlot = new Slot();

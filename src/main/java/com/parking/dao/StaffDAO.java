@@ -21,6 +21,7 @@ public class StaffDAO {
                 s.setUsername(rs.getString("username"));
                 s.setFullName(rs.getString("full_name"));
                 s.setRole(UserRole.valueOf(rs.getString("role")));
+                s.setIsActive(rs.getBoolean("is_active"));
                 list.add(s);
             }
         } catch (SQLException e) { e.printStackTrace(); }
@@ -32,7 +33,7 @@ public class StaffDAO {
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, staff.getUsername());
-            ps.setString(2, staff.getPasswordHash()); // Lưu chuỗi đã hash
+            ps.setString(2, staff.getPasswordHash());
             ps.setString(3, staff.getFullName());
             ps.setString(4, staff.getRole().name());
             return ps.executeUpdate() > 0;
@@ -45,7 +46,7 @@ public class StaffDAO {
             "UPDATE staff SET full_name = ?, role = ?, password_hash = ? WHERE id = ?" :
             "UPDATE staff SET full_name = ?, role = ? WHERE id = ?";
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, staff.getFullName());
             ps.setString(2, staff.getRole().name());
             if (updatePassword) {
@@ -60,16 +61,19 @@ public class StaffDAO {
     }
     
     public boolean deleteStaff(Long id) {
-        String sql = "DELETE FROM staff WHERE id = ?";
+        String sql = "UPDATE staff SET is_active = 0 WHERE id = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, id);
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return false;
     }
+
     public Staff login(String username, String passwordHash) {
-        String sql = "SELECT * FROM staff WHERE username = ? AND password_hash = ?";
+        String sql = "SELECT * FROM staff WHERE username = ? AND password_hash = ? AND is_active = 1";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
              
@@ -82,7 +86,8 @@ public class StaffDAO {
                     s.setId(rs.getLong("id"));
                     s.setUsername(rs.getString("username"));
                     s.setFullName(rs.getString("full_name"));
-                    s.setRole(com.parking.enums.UserRole.valueOf(rs.getString("role")));
+                    s.setRole(UserRole.valueOf(rs.getString("role")));
+                    s.setIsActive(rs.getBoolean("is_active"));
                     return s;
                 }
             }

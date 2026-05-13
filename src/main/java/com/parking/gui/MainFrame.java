@@ -1,6 +1,6 @@
 package com.parking.gui;
 
-import com.parking.utils.Session; // THÊM DÒNG NÀY ĐỂ LẤY THÔNG TIN SESSION
+import com.parking.utils.Session;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,17 +14,19 @@ public class MainFrame extends JFrame {
     private CardLayout cards;
     
     // Các Panel cũ
+    private DashboardPanel dashboardPanel; 
     private CheckInOutPanel checkPanel;
-//    private SlotPanel slotPanel; // Sơ đồ UI do Thịnh/Phi làm
+//  private SlotPanel slotPanel; // Sơ đồ UI do Thịnh/Phi làm
     private ParkingInfoPanel lotPanel;
     private FloorPanel floorPanel;
     private PriceConfigPanel pricePanel;
     private StaffPanel staffPanel;
-    private SlotVisualPanel slotVisualPanel; // THÊM DÒNG NÀY
-
+    private SlotVisualPanel slotVisualPanel; 
+    private HistoryPanel historyPanel; // Khai báo Panel mới	
+    
     // Bổ sung các Panel mới của Tín
     private SlotManagementPanel slotManagePanel; 
-//    private MonthlySubscriptionPanel subPanel;
+    private MonthlySubscriptionPanel subPanel;
 
     private final List<JButton> navBtns = new ArrayList<>();
     private JLabel lbClock;
@@ -80,10 +82,10 @@ public class MainFrame extends JFrame {
         lbClock.setFont(Theme.FONT_SMALL);
         lbClock.setForeground(Theme.TEXT_MUTED);
         
-        right.add(lblUser);     // THÊM VÀO PANEL
+        right.add(lblUser);     
         right.add(badge); 
         right.add(lbClock);
-        right.add(btnLogout);   // THÊM VÀO PANEL
+        right.add(btnLogout);   
         
         topBar.add(right, BorderLayout.EAST);
         add(topBar, BorderLayout.NORTH);
@@ -95,15 +97,17 @@ public class MainFrame extends JFrame {
         sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
         sidebar.setBorder(BorderFactory.createEmptyBorder(12, 8, 12, 8));
 
-        // Cập nhật Menu đầy đủ các chức năng
+        // ĐÃ CẬP NHẬT: Thêm menu Lịch Sử Giao Dịch
         String[][] items = {
+            {"dash",          "📊  Tổng quan"},
             {"checkin",       "🚗  Vào / Ra"},
             {"slots",         "🅿  Sơ đồ xe"},
-            {"slot_manage",   "⚙  Quản lý chỗ đỗ"}, // Mới thêm
+            {"slot_manage",   "⚙  Quản lý chỗ đỗ"}, 
             {"lots",          "🏢  Quản lý Bãi xe"},
             {"floors",        "🏢  Quản lý Tầng"},
             {"price",         "💰  Biểu giá"},
-            {"sub",           "💳  Vé tháng"},       // Mới thêm
+            {"sub",           "💳  Vé tháng"},
+            {"history",       "📜  Lịch sử GD"},   // THÊM DÒNG NÀY
             {"staff",         "👥  Nhân sự"}
         };
         
@@ -123,8 +127,7 @@ public class MainFrame extends JFrame {
         contentArea.setBackground(Theme.BG_SECONDARY);
         
         // Khởi tạo các Panel
-//        slotPanel       = new SlotPanel();
-//       checkPanel      = new CheckInOutPanel(() -> slotPanel.loadSlots()); 
+        dashboardPanel  = new DashboardPanel(); 
         checkPanel 		= new CheckInOutPanel();
         lotPanel        = new ParkingInfoPanel();
         floorPanel      = new FloorPanel();
@@ -133,23 +136,25 @@ public class MainFrame extends JFrame {
         
         // Khởi tạo Panel mới
         slotManagePanel = new SlotManagementPanel();
-//        subPanel        = new MonthlySubscriptionPanel();
-        slotVisualPanel = new SlotVisualPanel(); // THÊM DÒNG NÀY
+        subPanel        = new MonthlySubscriptionPanel();
+        slotVisualPanel = new SlotVisualPanel(); 
+        historyPanel    = new HistoryPanel(); // KHỞI TẠO PANEL LỊCH SỬ
         
         // Add vào CardLayout
         contentArea.add(checkPanel, "checkin");
-//        contentArea.add(slotPanel,  "slots");
-        contentArea.add(slotVisualPanel, "slots"); // THÊM DÒNG NÀY
-        contentArea.add(slotManagePanel, "slot_manage"); // Mới
+        contentArea.add(dashboardPanel, "dash");
+        contentArea.add(slotVisualPanel, "slots"); 
+        contentArea.add(slotManagePanel, "slot_manage"); 
         contentArea.add(lotPanel,   "lots");
         contentArea.add(floorPanel, "floors");
         contentArea.add(pricePanel, "price");
-//        contentArea.add(subPanel,   "sub");             // Mới
+        contentArea.add(subPanel,   "sub");             
+        contentArea.add(historyPanel, "history"); // THÊM VÀO CARDLAYOUT
         contentArea.add(staffPanel, "staff");
         
         add(contentArea, BorderLayout.CENTER);
 
-        switchTo("checkin"); // Mặc định mở trang Nhận/Trả xe
+        switchTo("dash");
     }
 
     private void switchTo(String key) {
@@ -160,7 +165,10 @@ public class MainFrame extends JFrame {
             b.setForeground(active ? Color.WHITE : new Color(180, 178, 170));
         });
         
-        // Làm mới dữ liệu Sơ đồ xe mỗi khi click vào Tab này
+        // Làm mới dữ liệu khi chuyển tab
+        if ("dash".equals(key)) {
+            dashboardPanel.refreshData(); 
+        }
         if ("slots".equals(key)) {
         	slotVisualPanel.loadMap(); 
         }
@@ -189,7 +197,7 @@ public class MainFrame extends JFrame {
         lbClock.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
     }
 
-    // --- BẮT ĐẦU THÊM MỚI: HÀM ĐĂNG XUẤT ---
+    // --- HÀM ĐĂNG XUẤT ---
     private void handleLogout() {
         int confirm = JOptionPane.showConfirmDialog(this, 
                 "Bạn có chắc chắn muốn đăng xuất?", 
@@ -210,7 +218,6 @@ public class MainFrame extends JFrame {
             });
         }
     }
-    // --- KẾT THÚC THÊM MỚI ---
 
     // ── Entry point ───────────────────────────────────────────
     public static void main(String[] args) {

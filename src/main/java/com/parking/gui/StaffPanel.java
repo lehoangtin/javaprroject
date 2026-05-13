@@ -30,7 +30,7 @@ public class StaffPanel extends JPanel {
     private void initComponents() {
         setLayout(new BorderLayout(10, 10));
         setBackground(Theme.BG_SECONDARY);
-        setBorder(Theme.sectionPadding()); // Đồng bộ padding
+        setBorder(Theme.sectionPadding()); 
 
         // --- Tiêu đề trang ---
         JLabel lblTitle = new JLabel("Quản Lý Nhân Sự (Staff)");
@@ -38,7 +38,7 @@ public class StaffPanel extends JPanel {
         lblTitle.setForeground(Theme.TEXT_PRIMARY);
         add(lblTitle, BorderLayout.NORTH);
 
-        // --- Panel Khung chính (Chứa Form và Bảng) ---
+        // --- Panel Khung chính ---
         JPanel centerPanel = new JPanel(new BorderLayout(10, 10));
         centerPanel.setOpaque(false);
 
@@ -98,7 +98,8 @@ public class StaffPanel extends JPanel {
         centerPanel.add(formPanel, BorderLayout.NORTH);
 
         // --- 2. BẢNG DỮ LIỆU ---
-        String[] columns = {"ID", "Tên đăng nhập", "Họ tên", "Vai trò"};
+        // THÊM CỘT TRẠNG THÁI VÀO BẢNG
+        String[] columns = {"ID", "Tên đăng nhập", "Họ tên", "Vai trò", "Trạng thái"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -123,7 +124,7 @@ public class StaffPanel extends JPanel {
 
         add(centerPanel, BorderLayout.CENTER);
 
-        // --- 3. KHU VỰC NÚT BẤM (Đồng bộ kiểu dáng và căn phải) ---
+        // --- 3. KHU VỰC NÚT BẤM ---
         JPanel bottomPanel = new JPanel(new BorderLayout());
         bottomPanel.setOpaque(false);
         bottomPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
@@ -131,14 +132,13 @@ public class StaffPanel extends JPanel {
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         btnPanel.setBackground(Theme.BG_SECONDARY);
 
-        // Khởi tạo và thiết lập trực tiếp cho từng nút
         btnAdd = new JButton("Thêm Mới");
         btnAdd.setFont(Theme.FONT_TITLE);
         btnAdd.setBackground(Theme.ACCENT_TEAL);
         btnAdd.setForeground(Color.WHITE);
         btnAdd.setFocusPainted(false);
-        btnAdd.setBorderPainted(false); // Bắt buộc cho macOS
-        btnAdd.setOpaque(true);         // Bắt buộc cho macOS
+        btnAdd.setBorderPainted(false);
+        btnAdd.setOpaque(true);
         btnAdd.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnAdd.setPreferredSize(new Dimension(130, 35));
 
@@ -152,15 +152,16 @@ public class StaffPanel extends JPanel {
         btnEdit.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnEdit.setPreferredSize(new Dimension(130, 35));
 
-        btnDelete = new JButton("Xóa");
+        // ĐỔI TÊN VÀ MÀU SẮC CHO NÚT "KHÓA TÀI KHOẢN"
+        btnDelete = new JButton("Khóa tài khoản");
         btnDelete.setFont(Theme.FONT_TITLE);
-        btnDelete.setBackground(Theme.ACCENT_RED);
+        btnDelete.setBackground(new Color(255, 153, 0)); // Màu Cam Cảnh báo
         btnDelete.setForeground(Color.WHITE);
         btnDelete.setFocusPainted(false);
         btnDelete.setBorderPainted(false);
         btnDelete.setOpaque(true);
         btnDelete.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btnDelete.setPreferredSize(new Dimension(130, 35));
+        btnDelete.setPreferredSize(new Dimension(160, 35));
 
         btnClear = new JButton("Làm Mới");
         btnClear.setFont(Theme.FONT_TITLE);
@@ -187,7 +188,6 @@ public class StaffPanel extends JPanel {
         btnClear.addActionListener(e -> clearForm());
     }
 
-    // Các hàm tạo UI đồng bộ Theme
     private JLabel createLabel(String text) {
         JLabel label = new JLabel(text);
         label.setFont(Theme.FONT_TITLE);
@@ -217,8 +217,10 @@ public class StaffPanel extends JPanel {
         tableModel.setRowCount(0); 
         List<Staff> list = bll.getAllStaff();
         for (Staff s : list) {
+            // Hiển thị text trực quan dựa trên is_active
+        	String status = (s.getIsActive() != null && s.getIsActive()) ? "Đang làm việc" : "Đã nghỉ việc";            
             tableModel.addRow(new Object[]{
-                s.getId(), s.getUsername(), s.getFullName(), s.getRole()
+                s.getId(), s.getUsername(), s.getFullName(), s.getRole(), status
             });
         }
     }
@@ -230,7 +232,7 @@ public class StaffPanel extends JPanel {
             txtUsername.setText(tableModel.getValueAt(row, 1).toString());
             txtFullName.setText(tableModel.getValueAt(row, 2).toString());
             cbRole.setSelectedItem(tableModel.getValueAt(row, 3));
-            txtPassword.setText(""); // Luôn để trống mật khẩu vì lý do bảo mật
+            txtPassword.setText(""); 
         }
     }
 
@@ -256,7 +258,7 @@ public class StaffPanel extends JPanel {
             loadDataToTable();
             clearForm();
         } else {
-            JOptionPane.showMessageDialog(this, "Thêm thất bại. Vui lòng nhập đủ thông tin!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Thêm thất bại. Vui lòng nhập đủ thông tin hoặc Username đã bị trùng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -285,19 +287,28 @@ public class StaffPanel extends JPanel {
 
     private void deleteAction() {
         if (txtId.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn nhân viên cần xóa từ bảng!");
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn nhân viên cần thao tác từ bảng!");
             return;
         }
         
         Long id = Long.parseLong(txtId.getText());
-        int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa nhân viên này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+        String username = txtUsername.getText(); // Lấy username để BLL kiểm tra
+        
+        // SỬA CÂU HỎI XÁC NHẬN CHO CHUẨN UX
+        int confirm = JOptionPane.showConfirmDialog(this, 
+                "Bạn có chắc chắn muốn khóa tài khoản / cho nhân viên này nghỉ việc không?", 
+                "Xác nhận khóa", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                
         if (confirm == JOptionPane.YES_OPTION) {
-            if (bll.deleteStaff(id)) {
-                JOptionPane.showMessageDialog(this, "Đã xóa nhân viên!");
+            String result = bll.deleteStaff(id, username); // Gọi hàm mới
+            
+            if ("SUCCESS".equals(result)) {
+                JOptionPane.showMessageDialog(this, "Đã khóa tài khoản nhân viên thành công!");
                 loadDataToTable();
                 clearForm();
             } else {
-                JOptionPane.showMessageDialog(this, "Xóa thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                // In ra chi tiết lý do từ chối (Vd: Là Admin gốc)
+                JOptionPane.showMessageDialog(this, result, "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             }
         }
     }

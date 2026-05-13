@@ -1,5 +1,9 @@
 package com.parking.bll;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+
 import com.parking.dao.ParkingRecordDAO;
 import com.parking.dao.VehicleDAO;
 import com.parking.entity.ParkingRecord;
@@ -8,8 +12,6 @@ import com.parking.enums.RecordStatus;
 import com.parking.enums.SlotStatus;
 import com.parking.enums.VehicleType;
 import com.parking.utils.Session;
-
-import java.time.LocalDateTime;
 
 public class ParkingRecordBLL {
     private ParkingRecordDAO recordDAO = new ParkingRecordDAO();
@@ -121,5 +123,8 @@ public class ParkingRecordBLL {
         }
 
         return "Lỗi hệ thống khi tạo giao dịch Check-in";
+    }
+    public List<Map<String, Object>> getAllHistory() {
+        return recordDAO.getTransactionHistory();
     }
 }

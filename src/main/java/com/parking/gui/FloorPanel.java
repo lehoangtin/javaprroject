@@ -187,13 +187,21 @@ public class FloorPanel extends JPanel {
     private void loadData() {
         tableModel.setRowCount(0);
         List<Floor> list = bll.getAllFloors();
+        com.parking.bll.SlotBLL slotBLL = new com.parking.bll.SlotBLL();
+
         for (Floor floor : list) {
+            // Đếm số lượng Slot thực tế đã được vẽ ở tầng này
+            int currentSlots = slotBLL.getSlotsByFloor(floor.getId()).size();
+            
+            // Xử lý chuỗi hiển thị sức chứa
+            
+            
             Object[] row = {
                 floor.getId(),
                 floor.getFloorNumber(),
                 floor.getDescription(),
-                floor.getCapacity() // Hiển thị capacity
-            };
+                floor.getCapacity()
+           };
             tableModel.addRow(row);
         }
     }

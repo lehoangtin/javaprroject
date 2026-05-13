@@ -24,7 +24,6 @@ public class ParkingInfoDAO {
                 info.setName(rs.getString("name"));
                 info.setAddress(rs.getString("address"));
                 info.setHotline(rs.getString("hotline"));
-                info.setCapacity(rs.getInt("capacity"));
                 return info;
             }
         } catch (SQLException e) {
@@ -41,10 +40,10 @@ public class ParkingInfoDAO {
         String sql;
         if (existingInfo == null) {
             // Chưa có thì Insert
-            sql = "INSERT INTO Parking_Info (name, address, hotline, capacity) VALUES (?, ?, ?, ?)";
+            sql = "INSERT INTO Parking_Info (name, address, hotline) VALUES (?, ?, ?)";
         } else {
             // Đã có thì Update bản ghi đó
-            sql = "UPDATE Parking_Info SET name = ?, address = ?, hotline = ?, capacity = ? WHERE id = ?";
+            sql = "UPDATE Parking_Info SET name = ?, address = ?, hotline = ?  WHERE id = ?";
         }
 
         try (Connection conn = DBConnection.getConnection();
@@ -53,10 +52,9 @@ public class ParkingInfoDAO {
             ps.setString(1, info.getName());
             ps.setString(2, info.getAddress());
             ps.setString(3, info.getHotline());
-            ps.setInt(4, info.getCapacity());
             
             if (existingInfo != null) {
-                ps.setInt(5, existingInfo.getId());
+                ps.setInt(4, existingInfo.getId());
             }
             
             return ps.executeUpdate() > 0;

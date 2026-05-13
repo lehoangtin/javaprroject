@@ -5,7 +5,6 @@ public class ParkingInfo {
     private String name;
     private String address;
     private String hotline;
-    private Integer capacity;
 
     public ParkingInfo() {}
 
@@ -41,11 +40,4 @@ public class ParkingInfo {
 		this.hotline = hotline;
 	}
 
-	public Integer getCapacity() {
-		return capacity;
-	}
-
-	public void setCapacity(Integer capacity) {
-		this.capacity = capacity;
-	}
 }

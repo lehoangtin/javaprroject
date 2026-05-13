@@ -10,7 +10,6 @@ public class ParkingRecord {
     private BigDecimal fee;      //[cite: 16]
     private Long vehicleId;
     private Long slotId;
-    private Long ticketId;
     private Long staffId;        // Nhân viên thực hiện giao dịch
     private RecordStatus status; //[cite: 16]
 
@@ -63,15 +62,6 @@ public class ParkingRecord {
 	public void setSlotId(Long slotId) {
 		this.slotId = slotId;
 	}
-
-	public Long getTicketId() {
-		return ticketId;
-	}
-
-	public void setTicketId(Long ticketId) {
-		this.ticketId = ticketId;
-	}
-
 	public Long getStaffId() {
 		return staffId;
 	}

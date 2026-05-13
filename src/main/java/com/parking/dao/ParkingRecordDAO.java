@@ -3,6 +3,10 @@ package com.parking.dao;
 import com.parking.entity.ParkingRecord;
 import com.parking.utils.DBConnection;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ParkingRecordDAO {
 	// Lấy phiếu đỗ của xe ĐANG TRONG BÃI dựa vào biển số
@@ -62,4 +66,37 @@ public class ParkingRecordDAO {
         }
         return false;
     }
+    public List<Map<String, Object>> getTransactionHistory() {
+        List<Map<String, Object>> list = new ArrayList<>();
+        String sql = "SELECT r.id, v.license_plate, v.vehicle_type, s.slot_number, " +
+                     "r.time_in, r.time_out, r.fee, st.full_name as staff_name, r.status " +
+                     "FROM parking_record r " +
+                     "JOIN Vehicle v ON r.vehicle_id = v.id " +
+                     "JOIN Slot s ON r.slot_id = s.id " +
+                     "LEFT JOIN Staff st ON r.staff_id = st.id " +
+                     "ORDER BY r.time_in DESC";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Map<String, Object> row = new HashMap<>();
+                row.put("id", rs.getLong("id"));
+                row.put("license_plate", rs.getString("license_plate"));
+                row.put("vehicle_type", rs.getString("vehicle_type"));
+                row.put("slot_number", rs.getString("slot_number"));
+                row.put("time_in", rs.getTimestamp("time_in"));
+                row.put("time_out", rs.getTimestamp("time_out"));
+                row.put("fee", rs.getBigDecimal("fee"));
+                row.put("staff_name", rs.getString("staff_name"));
+                row.put("status", rs.getString("status"));
+                list.add(row);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
 }

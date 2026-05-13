@@ -1,13 +1,12 @@
 package com.parking.enums;
 
-public enum SlotStatus {
-    EMPTY("Trống"),
-    OCCUPIED("Đang có xe"),
-    MAINTENANCE("Bảo trì");
+public enum SubscriptionStatus {
+    ACTIVE("Hoạt động"),
+    EXPIRED("Đã hết hạn");
 
     private final String displayName;
 
-    SlotStatus(String displayName) {
+    SubscriptionStatus(String displayName) {
         this.displayName = displayName;
     }
 

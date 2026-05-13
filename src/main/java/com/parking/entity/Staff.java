@@ -6,7 +6,7 @@ public class Staff {
     private Long id;
     private String fullName;
     private String username;
-    private String passwordHash; // Không lưu plaintext[cite: 19]
+    private String passwordHash;
     private UserRole role;       // ADMIN hoặc STAFF
     private Boolean isActive;
     private LocalDateTime createdAt;

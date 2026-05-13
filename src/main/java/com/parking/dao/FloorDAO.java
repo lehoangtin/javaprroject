@@ -12,7 +12,6 @@ import java.util.List;
 
 public class FloorDAO {
 
-    // [READ] Lấy danh sách tầng
     public List<Floor> getAllFloors() {
         List<Floor> list = new ArrayList<>();
         String sql = "SELECT * FROM floor ORDER BY floor_number ASC";
@@ -35,7 +34,6 @@ public class FloorDAO {
         return list;
     }
 
-    // [CREATE] Thêm tầng mới
     public boolean addFloor(Floor floor) {
     	String sql = "INSERT INTO floor (floor_number, description, capacity) VALUES (?, ?, ?)";
     	try (Connection conn = DBConnection.getConnection();
@@ -55,9 +53,7 @@ public class FloorDAO {
         return false;
     }
 
-    // [UPDATE] Cập nhật thông tin tầng
     public boolean updateFloor(Floor floor) {
-        // Cập nhật câu lệnh SQL thêm cột capacity
         String sql = "UPDATE floor SET floor_number = ?, description = ?, capacity = ? WHERE id = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -65,7 +61,6 @@ public class FloorDAO {
             ps.setInt(1, floor.getFloorNumber());
             ps.setString(2, floor.getDescription());
             
-            // Xử lý null cho capacity đề phòng trường hợp không nhập
             if (floor.getCapacity() != null) {
                 ps.setInt(3, floor.getCapacity());
             } else {
@@ -81,7 +76,6 @@ public class FloorDAO {
         return false;
     }
 
-    // [DELETE] Xóa tầng
     public boolean deleteFloor(Long id) {
         String sql = "DELETE FROM floor WHERE id = ?";
         try (Connection conn = DBConnection.getConnection();

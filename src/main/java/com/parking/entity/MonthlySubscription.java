@@ -1,6 +1,7 @@
 package com.parking.entity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import com.parking.enums.SubscriptionStatus; // Thêm import này
 
 public class MonthlySubscription {
     private Long id;
@@ -8,12 +9,15 @@ public class MonthlySubscription {
     private LocalDate startDate;
     private LocalDate endDate;
     private BigDecimal amountPaid;
-    private String status; // ACTIVE, EXPIRED, CANCELLED
-
+    private SubscriptionStatus status;
     public MonthlySubscription() {}
 
 	public Long getId() {
 		return id;
+	}
+
+	public SubscriptionStatus getStatus() {
+		return status;
 	}
 
 	public void setId(Long id) {
@@ -22,6 +26,10 @@ public class MonthlySubscription {
 
 	public Long getVehicleId() {
 		return vehicleId;
+	}
+
+	public void setStatus(SubscriptionStatus status) {
+		this.status = status;
 	}
 
 	public void setVehicleId(Long vehicleId) {
@@ -52,11 +60,5 @@ public class MonthlySubscription {
 		this.amountPaid = amountPaid;
 	}
 
-	public String getStatus() {
-		return status;
-	}
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
 }

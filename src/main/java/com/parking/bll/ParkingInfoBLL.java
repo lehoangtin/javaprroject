@@ -14,9 +14,9 @@ public class ParkingInfoBLL {
         return dao.getParkingInfo();
     }
 
-    public boolean saveInfo(String name, String address, String hotline, Integer capacity) {
+    public boolean saveInfo(String name, String address, String hotline) {
         // Ràng buộc cơ bản
-        if (name == null || name.trim().isEmpty() || capacity == null || capacity <= 0) {
+        if (name == null || name.trim().isEmpty()) {
             return false;
         }
 
@@ -24,8 +24,6 @@ public class ParkingInfoBLL {
         info.setName(name);
         info.setAddress(address);
         info.setHotline(hotline);
-        info.setCapacity(capacity);
-
         return dao.saveOrUpdateParkingInfo(info);
     }
 }
