@@ -34,7 +34,6 @@ public class SlotDAO {
         return list;
     }
 
-    // Đếm tổng số chỗ đỗ hiện có trong bãi
     public int countTotalSlots() {
         String sql = "SELECT COUNT(*) FROM slot";
         try (Connection conn = DBConnection.getConnection();
@@ -83,17 +82,14 @@ public class SlotDAO {
         } catch (SQLException e) { e.printStackTrace(); }
         return false;
     }
- // Lấy danh sách chỗ đỗ theo Mã tầng (Phục vụ cho việc vẽ Sơ đồ bãi xe)
     public List<Slot> getSlotsByFloor(Long floorId) {
         List<Slot> list = new ArrayList<>();
-        // Lưu ý: Kiểm tra lại tên bảng (ở đây giả định là bảng 'slot') 
-        // và tên các cột cho khớp với database của bạn.
         String sql = "SELECT * FROM slot WHERE floor_id = ?"; 
         
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
              
-            ps.setLong(1, floorId); // Truyền tham số floorId vào câu SQL
+            ps.setLong(1, floorId); 
             
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -102,7 +98,6 @@ public class SlotDAO {
                     slot.setFloorId(rs.getLong("floor_id"));
                     slot.setSlotNumber(rs.getString("slot_number"));
                     
-                    // Chuyển đổi String từ DB sang kiểu Enum
                     slot.setVehicleType(com.parking.enums.VehicleType.valueOf(rs.getString("vehicle_type")));
                     slot.setStatus(com.parking.enums.SlotStatus.valueOf(rs.getString("status")));
                     
@@ -115,7 +110,6 @@ public class SlotDAO {
         }
         return list;
     }
- // Hàm này cho Phi gọi lúc Check-in / Check-out để đổi màu sơ đồ
     public boolean updateStatus(Long slotId, com.parking.enums.SlotStatus newStatus) {
         String sql = "UPDATE slot SET status = ? WHERE id = ?";
         try (java.sql.Connection conn = DBConnection.getConnection();

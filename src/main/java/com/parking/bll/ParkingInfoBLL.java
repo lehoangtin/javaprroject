@@ -15,7 +15,6 @@ public class ParkingInfoBLL {
     }
 
     public boolean saveInfo(String name, String address, String hotline) {
-        // Ràng buộc cơ bản
         if (name == null || name.trim().isEmpty()) {
             return false;
         }
@@ -26,4 +25,5 @@ public class ParkingInfoBLL {
         info.setHotline(hotline);
         return dao.saveOrUpdateParkingInfo(info);
     }
+    
 }

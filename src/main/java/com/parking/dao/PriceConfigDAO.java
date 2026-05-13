@@ -13,7 +13,6 @@ import java.util.List;
 
 public class PriceConfigDAO {
 
-    // [READ] Lấy danh sách
     public List<PriceConfig> getAllPriceConfigs() {
         List<PriceConfig> list = new ArrayList<>();
         String sql = "SELECT * FROM price_config";
@@ -37,7 +36,6 @@ public class PriceConfigDAO {
         return list;
     }
 
-    // [CREATE] Thêm mới
     public boolean addPriceConfig(PriceConfig config) {
         String sql = "INSERT INTO price_config (vehicle_type, base_fee, extra_fee_per_hour, monthly_price) VALUES (?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
@@ -55,7 +53,6 @@ public class PriceConfigDAO {
         return false;
     }
 
-    // [UPDATE] Cập nhật
     public boolean updatePriceConfig(PriceConfig config) {
         String sql = "UPDATE price_config SET vehicle_type = ?, base_fee = ?, extra_fee_per_hour = ?, monthly_price = ? WHERE id = ?";
         try (Connection conn = DBConnection.getConnection();
@@ -74,7 +71,6 @@ public class PriceConfigDAO {
         return false;
     }
 
-    // [DELETE] Xóa
     public boolean deletePriceConfig(Long id) {
         String sql = "DELETE FROM price_config WHERE id = ?";
         try (Connection conn = DBConnection.getConnection();
@@ -109,6 +105,6 @@ public class PriceConfigDAO {
             System.err.println("Lỗi khi lấy cấu hình giá theo loại xe:");
             e.printStackTrace();
         }
-        return null; // Trả về null nếu chưa cấu hình giá cho loại xe này
+        return null; 
     }
 }

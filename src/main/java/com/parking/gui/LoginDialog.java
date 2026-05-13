@@ -29,11 +29,10 @@ public class LoginDialog extends JDialog {
 
     private void initComponents() {
         setSize(400, 300);
-        setLocationRelativeTo(null); // Căn giữa màn hình
+        setLocationRelativeTo(null); 
         setResizable(false);
         setLayout(new BorderLayout());
 
-        // --- Panel Header ---
         JPanel headerPanel = new JPanel();
         headerPanel.setBackground(Theme.ACCENT_BLUE);
         headerPanel.setPreferredSize(new Dimension(400, 60));
@@ -44,7 +43,6 @@ public class LoginDialog extends JDialog {
         headerPanel.add(lblTitle);
         add(headerPanel, BorderLayout.NORTH);
 
-        // --- Panel Form ---
         JPanel formPanel = new JPanel(new GridBagLayout());
         formPanel.setBackground(Theme.BG_PRIMARY);
         GridBagConstraints gbc = new GridBagConstraints();
@@ -81,21 +79,20 @@ public class LoginDialog extends JDialog {
 
         add(formPanel, BorderLayout.CENTER);
 
-        // --- Panel Buttons ---
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 15));
         btnPanel.setBackground(Theme.BG_SECONDARY);
         btnPanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.BORDER));
 
         btnLogin = new JButton("Đăng Nhập");
         btnLogin.setFont(Theme.FONT_TITLE);
-        btnLogin.setBackground(Theme.ACCENT_BLUE); // Màu xanh từ Theme[cite: 12]
-        btnLogin.setForeground(Color.WHITE);       // Chữ trắng
-        btnLogin.setBorderPainted(false);          // Quan trọng cho macOS
-        btnLogin.setOpaque(true);                  // Quan trọng cho macOS
+        btnLogin.setBackground(Theme.ACCENT_BLUE);
+        btnLogin.setForeground(Color.WHITE);
+        btnLogin.setBorderPainted(false);
+        btnLogin.setOpaque(true);
 
         btnCancel = new JButton("Thoát");
         btnCancel.setFont(Theme.FONT_TITLE);
-        btnCancel.setBackground(Theme.ACCENT_RED);  // Màu đỏ[cite: 12]
+        btnCancel.setBackground(Theme.ACCENT_RED);
         btnCancel.setForeground(Color.WHITE);
         btnCancel.setBorderPainted(false);
         btnCancel.setOpaque(true);
@@ -104,7 +101,6 @@ public class LoginDialog extends JDialog {
         btnPanel.add(btnCancel);
         add(btnPanel, BorderLayout.SOUTH);
 
-        // --- Events ---
         btnLogin.addActionListener(e -> processLogin());
 
         btnCancel.addActionListener(e -> {
@@ -112,9 +108,7 @@ public class LoginDialog extends JDialog {
             dispose();
         });
 
-        // Hỗ trợ ấn Enter để đăng nhập
         KeyAdapter enterKeyAdapter = new KeyAdapter() {
-            @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     processLogin();
@@ -134,11 +128,9 @@ public class LoginDialog extends JDialog {
         if (staff != null) {
             this.loggedInStaff = staff;
             this.succeeded = true;
-            
-            // LƯU TRỮ VÀO SESSION Ở ĐÂY ĐỂ PHÂN QUYỀN TRÊN TOÀN HỆ THỐNG
             Session.currentUser = staff; 
             
-            dispose(); // Đóng hộp thoại thành công
+            dispose(); 
         } else {
             JOptionPane.showMessageDialog(this,
                     "Tên đăng nhập hoặc mật khẩu không chính xác!",
@@ -148,13 +140,9 @@ public class LoginDialog extends JDialog {
             txtPassword.requestFocus();
         }
     }
-
-    // Hàm này sẽ được Main.java gọi để kiểm tra xem có được mở MainFrame không
     public boolean isSucceeded() {
         return succeeded;
     }
-
-    // Lấy thông tin nhân viên đang đăng nhập để hiển thị lên MainFrame
     public Staff getLoggedInStaff() {
         return loggedInStaff;
     }

@@ -17,14 +17,10 @@ public class ParkingRecordBLL {
     private ParkingRecordDAO recordDAO = new ParkingRecordDAO();
     private VehicleDAO vehicleDAO = new VehicleDAO();
     
-    // Gọi sang BLL của Tín để tái sử dụng code
     private SlotBLL slotBLL = new SlotBLL(); 
     
     private com.parking.dao.MonthlySubscriptionDAO subDAO = new com.parking.dao.MonthlySubscriptionDAO();
-    private com.parking.bll.PriceConfigBLL priceBLL = new com.parking.bll.PriceConfigBLL(); // Của Tín
-
- 
-    // HÀM 1: CHỈ TÍNH TOÁN (Dùng cho nút Tra cứu - Không ghi đè DB)
+    private com.parking.bll.PriceConfigBLL priceBLL = new com.parking.bll.PriceConfigBLL(); 
     public ParkingRecord calculateInfo(String licensePlate) throws Exception {
         if (licensePlate == null || licensePlate.trim().isEmpty()) {
             throw new Exception("Vui lòng nhập biển số xe!");
@@ -53,10 +49,9 @@ public class ParkingRecordBLL {
         }
         record.setTimeOut(timeOut);
         record.setFee(fee);
-        return record; // Trả về để hiển thị, chưa lưu vào DB
+        return record; 
     }
 
-    // HÀM 2: XÁC NHẬN RA XE (Dùng cho nút Thanh toán - Lúc này mới ghi DB)
     public boolean confirmCheckOut(ParkingRecord record) {
         record.setStatus(RecordStatus.COMPLETED);
         if (recordDAO.updateRecordOnCheckout(record)) {
@@ -65,7 +60,6 @@ public class ParkingRecordBLL {
         return false;
     }
     public String checkIn(String licensePlate, VehicleType type, Long slotId) {
-        // 1. Validate: Kiểm tra phiên đăng nhập xem ai đang trực ca
         if (Session.currentUser == null) {
             return "Lỗi: Không xác định được nhân viên đang trực ca (Chưa đăng nhập)";
         }
@@ -78,20 +72,17 @@ public class ParkingRecordBLL {
 
         String cleanPlate = licensePlate.trim().toUpperCase();
         
-        // Kiểm tra xem xe này có đang đỗ trong bãi hay không
         ParkingRecord activeRecord = recordDAO.findActiveRecordByLicensePlate(cleanPlate);
         if (activeRecord != null) {
             return "Xe mang biển số '" + cleanPlate + "' hiện đang trong bãi";
         }
 
-        // 2. Xử lý thông tin Xe (Vehicle)
         Vehicle vehicle = vehicleDAO.findByLicensePlate(cleanPlate);
         Long currentVehicleId;
         
         if (vehicle != null) {
             currentVehicleId = vehicle.getId();
         } else {
-            // Xe mới lần đầu vào bãi -> Thêm vào DB
             Vehicle newVehicle = new Vehicle();
             newVehicle.setLicensePlate(cleanPlate);
             newVehicle.setVehicleType(type);
@@ -102,7 +93,6 @@ public class ParkingRecordBLL {
             }
         }
 
-        // 3. Tạo Record Giao dịch (ParkingRecord)
         ParkingRecord record = new ParkingRecord();
         record.setTimeIn(LocalDateTime.now());
         record.setVehicleId(currentVehicleId);
@@ -110,9 +100,7 @@ public class ParkingRecordBLL {
         record.setStaffId(Session.currentUser.getId()); // Ghi nhận nhân viên thao tác
         record.setStatus(RecordStatus.IN_PARKING); // Trạng thái: Đang đỗ trong bãi
 
-        // 4. Lưu giao dịch & Cập nhật Sơ đồ
         if (recordDAO.insertRecord(record)) {
-            // Gọi hàm của Tín để ép ô đỗ chuyển sang màu đỏ (OCCUPIED)
             boolean isSlotUpdated = slotBLL.updateSlotStatus(slotId, SlotStatus.OCCUPIED);
             
             if (isSlotUpdated) {
@@ -126,5 +114,8 @@ public class ParkingRecordBLL {
     }
     public List<Map<String, Object>> getAllHistory() {
         return recordDAO.getTransactionHistory();
+    }
+    public Map<String, String> getVehicleInfoInSlot(String slotNumber) {
+        return recordDAO.getVehicleInfoInSlot(slotNumber);
     }
 }

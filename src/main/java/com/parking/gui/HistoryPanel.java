@@ -18,7 +18,7 @@ public class HistoryPanel extends JPanel {
     public HistoryPanel() {
         bll = new ParkingRecordBLL();
         initComponents();
-        loadData(""); // Load toàn bộ dữ liệu khi khởi tạo
+        loadData("");
     }
 
     private void initComponents() {
@@ -26,7 +26,6 @@ public class HistoryPanel extends JPanel {
         setBackground(Theme.BG_SECONDARY);
         setBorder(Theme.sectionPadding());
 
-        // --- Header & Search Bar ---
         JPanel topPanel = new JPanel(new BorderLayout(10, 10));
         topPanel.setOpaque(false);
 
@@ -54,7 +53,6 @@ public class HistoryPanel extends JPanel {
         topPanel.add(searchPanel, BorderLayout.CENTER);
         add(topPanel, BorderLayout.NORTH);
 
-        // --- Table ---
         String[] columns = {"ID", "Biển Số", "Loại Xe", "Vị Trí Đỗ", "Giờ Vào", "Giờ Ra", "Phí (VNĐ)", "Nhân Viên", "Trạng Thái"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
@@ -65,15 +63,12 @@ public class HistoryPanel extends JPanel {
         table.setFont(Theme.FONT_BODY);
         table.setRowHeight(35);
         table.getTableHeader().setFont(Theme.FONT_TITLE);
-        
-        // Căn giữa dữ liệu và tô màu trạng thái
         setupTableRenderer();
 
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setBorder(Theme.cardBorder());
         add(scrollPane, BorderLayout.CENTER);
 
-        // --- Events ---
         btnSearch.addActionListener(e -> loadData(txtSearch.getText().trim()));
         btnRefresh.addActionListener(e -> {
             txtSearch.setText("");
@@ -85,23 +80,19 @@ public class HistoryPanel extends JPanel {
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         
-        // Gắn bộ căn giữa cho tất cả các cột
         for (int i = 0; i < table.getColumnCount(); i++) {
             table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
 
-        // Renderer riêng biệt cho cột Trạng Thái (Cột số 8)
         table.getColumnModel().getColumn(8).setCellRenderer(new DefaultTableCellRenderer() {
-            @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 
                 if (value != null) {
                     if (value.toString().equals("Trong bãi")) {
-                        c.setForeground(new Color(0, 153, 51)); // Màu xanh lá nổi bật
-                        c.setFont(Theme.FONT_TITLE); // In đậm
+                        c.setForeground(new Color(0, 153, 51));
+                        c.setFont(Theme.FONT_TITLE); 
                     } else {
-                        // Reset lại màu và font gốc nếu xe "Đã xong" để tránh lỗi lem màu khi cuộn
                         if (!isSelected) {
                             c.setForeground(Theme.TEXT_PRIMARY); 
                         }
@@ -121,7 +112,6 @@ public class HistoryPanel extends JPanel {
         for (Map<String, Object> row : list) {
             String plate = row.get("license_plate").toString();
             
-            // Lọc theo từ khóa nếu có (Không phân biệt hoa thường)
             if (!keyword.isEmpty() && !plate.toLowerCase().contains(keyword.toLowerCase())) {
                 continue;
             }

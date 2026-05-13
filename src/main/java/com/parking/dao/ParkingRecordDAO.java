@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 public class ParkingRecordDAO {
-	// Lấy phiếu đỗ của xe ĐANG TRONG BÃI dựa vào biển số
     public com.parking.entity.ParkingRecord findActiveRecordByLicensePlate(String licensePlate) {
         String sql = "SELECT pr.* FROM parking_record pr " +
                      "JOIN vehicle v ON pr.vehicle_id = v.id " +
@@ -31,7 +30,6 @@ public class ParkingRecordDAO {
         } catch (java.sql.SQLException e) { e.printStackTrace(); }
         return null;
     }
-    // Cập nhật Giờ ra, Phí, và Trạng thái khi xe check-out
     public boolean updateRecordOnCheckout(com.parking.entity.ParkingRecord record) {
         String sql = "UPDATE parking_record SET time_out = ?, fee = ?, status = ? WHERE id = ?";
         try (java.sql.Connection conn = com.parking.utils.DBConnection.getConnection();
@@ -45,13 +43,10 @@ public class ParkingRecordDAO {
         return false;
     }
     
-    // Hàm lưu giao dịch lúc xe vào
     public boolean insertRecord(ParkingRecord record) {
         String sql = "INSERT INTO parking_record (time_in, vehicle_id, slot_id, staff_id, status) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-             
-            // Chuyển từ LocalDateTime của Java sang Timestamp của SQL
             ps.setTimestamp(1, Timestamp.valueOf(record.getTimeIn()));
             ps.setLong(2, record.getVehicleId());
             ps.setLong(3, record.getSlotId());
@@ -97,6 +92,27 @@ public class ParkingRecordDAO {
             e.printStackTrace();
         }
         return list;
+    }
+    public Map<String, String> getVehicleInfoInSlot(String slotNumber) {
+        String sql = "SELECT v.license_plate, v.vehicle_type, v.owner_name, r.time_in " +
+                     "FROM parking_record r " +
+                     "JOIN Vehicle v ON r.vehicle_id = v.id " +
+                     "JOIN Slot s ON r.slot_id = s.id " +
+                     "WHERE s.slot_number = ? AND r.status = 'IN_PARKING'";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, slotNumber);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                Map<String, String> info = new HashMap<>();
+                info.put("plate", rs.getString("license_plate"));
+                info.put("type", rs.getString("vehicle_type"));
+                info.put("owner", rs.getString("owner_name"));
+                info.put("timeIn", rs.getString("time_in"));
+                return info;
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return null;
     }
     
 }

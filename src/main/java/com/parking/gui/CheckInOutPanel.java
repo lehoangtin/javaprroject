@@ -6,14 +6,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class CheckInOutPanel extends JPanel {
-    // Component cho Form Nhận Xe (Bên trái)
     private JTextField txtInLicensePlate;
     private JComboBox<VehicleType> cbInVehicleType;
     private JComboBox<String> cbInSlot;
     private JButton btnCheckIn;
     private JLabel lblInStatus;
 
-    // Component cho Form Trả Xe (Bên phải)
     private JTextField txtOutSearchPlate;
     private JButton btnSearch;
     private JLabel lblOutInfo;
@@ -44,7 +42,6 @@ public class CheckInOutPanel extends JPanel {
         loadEmptySlots();
     }
     
-    // 1. FORM NHẬN XE (BÊN TRÁI)
     private JPanel createCheckInForm() {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.WHITE);
@@ -61,7 +58,6 @@ public class CheckInOutPanel extends JPanel {
         gbc.insets = new Insets(10, 15, 10, 15);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Dòng 1: Biển số xe *
         gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 0.25;
         formPanel.add(new JLabel("Biển số xe *"), gbc);
         gbc.gridx = 1; gbc.weightx = 0.75;
@@ -70,7 +66,6 @@ public class CheckInOutPanel extends JPanel {
         txtInLicensePlate.setFont(Theme.FONT_BODY);
         formPanel.add(txtInLicensePlate, gbc);
 
-        // Dòng 2: Loại xe
         gbc.gridx = 0; gbc.gridy = 1; gbc.weightx = 0.25;
         formPanel.add(new JLabel("Loại xe"), gbc);
         gbc.gridx = 1; gbc.weightx = 0.75;
@@ -79,7 +74,6 @@ public class CheckInOutPanel extends JPanel {
         cbInVehicleType.setFont(Theme.FONT_BODY);
         formPanel.add(cbInVehicleType, gbc);
 
-        // Dòng 3: Vị trí đỗ
         gbc.gridx = 0; gbc.gridy = 2; gbc.weightx = 0.25;
         formPanel.add(new JLabel("Vị trí đỗ"), gbc);
         gbc.gridx = 1; gbc.weightx = 0.75;
@@ -88,7 +82,6 @@ public class CheckInOutPanel extends JPanel {
         cbInSlot.setFont(Theme.FONT_BODY);
         formPanel.add(cbInSlot, gbc);
 
-        // Dòng 4: Nút Ghi nhận
         gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 2;
         gbc.insets = new Insets(20, 15, 5, 15);
         btnCheckIn = new JButton("Ghi nhận xe vào");
@@ -96,14 +89,12 @@ public class CheckInOutPanel extends JPanel {
         btnCheckIn.setPreferredSize(new Dimension(0, 35));
         formPanel.add(btnCheckIn, gbc);
 
-        // Dòng 5: Dòng trạng thái 
         gbc.gridy = 4;
         gbc.insets = new Insets(5, 15, 20, 15);
         lblInStatus = new JLabel(" ");
         lblInStatus.setFont(new Font("Segoe UI", Font.BOLD, 12));
         formPanel.add(lblInStatus, gbc);
 
-        // TUYỆT CHIÊU ÉP FORM LÊN TRÊN CÙNG
         JPanel wrapper = new JPanel(new BorderLayout());
         wrapper.setBackground(Color.WHITE);
         wrapper.add(formPanel, BorderLayout.NORTH); // Ép form dính chặt lên trên
@@ -112,7 +103,6 @@ public class CheckInOutPanel extends JPanel {
         return panel;
     }
 
-    // 2. FORM TRẢ XE (BÊN PHẢI)
     private JPanel createCheckOutForm() {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.WHITE);
@@ -129,7 +119,6 @@ public class CheckInOutPanel extends JPanel {
         gbc.insets = new Insets(10, 15, 10, 15);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Dòng 1: Biển số xe *
         gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 0.25;
         formPanel.add(new JLabel("Biển số xe *"), gbc);
         gbc.gridx = 1; gbc.weightx = 0.75;
@@ -138,7 +127,6 @@ public class CheckInOutPanel extends JPanel {
         txtOutSearchPlate.setFont(Theme.FONT_BODY);
         formPanel.add(txtOutSearchPlate, gbc);
 
-        // Dòng 2: Nút Tra cứu
         gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 2;
         gbc.insets = new Insets(5, 15, 15, 15);
         btnSearch = new JButton("Tra cứu thông tin");
@@ -146,7 +134,6 @@ public class CheckInOutPanel extends JPanel {
         btnSearch.setPreferredSize(new Dimension(0, 35));
         formPanel.add(btnSearch, gbc);
 
-        // Dòng 3: Khu vực hiển thị thông tin
         gbc.gridy = 2;
         lblOutInfo = new JLabel("<html><i>Nhập biển số và nhấn Tra cứu...</i></html>");
         lblOutInfo.setFont(Theme.FONT_BODY);
@@ -155,7 +142,6 @@ public class CheckInOutPanel extends JPanel {
         lblOutInfo.setVerticalAlignment(SwingConstants.TOP); // Ép chữ dính lên trên
         formPanel.add(lblOutInfo, gbc);
 
-        // Dòng 4: Nút Thanh toán
         gbc.gridy = 3;
         gbc.insets = new Insets(10, 15, 5, 15);
         btnCheckOut = new JButton("Thanh toán & Ra xe");
@@ -164,14 +150,12 @@ public class CheckInOutPanel extends JPanel {
         btnCheckOut.setEnabled(false); 
         formPanel.add(btnCheckOut, gbc);
 
-        // Dòng 5: Dòng trạng thái 
         gbc.gridy = 4;
         gbc.insets = new Insets(5, 15, 20, 15);
         lblOutStatus = new JLabel(" ");
         lblOutStatus.setFont(new Font("Segoe UI", Font.BOLD, 12));
         formPanel.add(lblOutStatus, gbc);
 
-        // TUYỆT CHIÊU ÉP FORM LÊN TRÊN CÙNG
         JPanel wrapper = new JPanel(new BorderLayout());
         wrapper.setBackground(Color.WHITE);
         wrapper.add(formPanel, BorderLayout.NORTH); // Ép form dính chặt lên trên
@@ -180,7 +164,6 @@ public class CheckInOutPanel extends JPanel {
         return panel;
     }
 
-    // 3. LOGIC XỬ LÝ 
     private void processCheckIn() {
         String bienSo = txtInLicensePlate.getText().trim();
         com.parking.enums.VehicleType loaiXe = (com.parking.enums.VehicleType) cbInVehicleType.getSelectedItem();
@@ -230,7 +213,6 @@ public class CheckInOutPanel extends JPanel {
             com.parking.bll.SlotBLL slotBLL = new com.parking.bll.SlotBLL();
             for (com.parking.entity.Slot slot : slotBLL.getAllSlots()) {
                 if (slot.getId().equals(currentOutRecord.getSlotId())) {
-                    // Lấy mã ô đỗ (Ví dụ: A-21). Nếu class Slot của Tín có thêm getFloorId() thì nó sẽ càng chi tiết
                     tenViTriDo = slot.getSlotNumber(); 
                     break;
                 }

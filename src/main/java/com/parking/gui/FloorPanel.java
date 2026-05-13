@@ -14,7 +14,7 @@ public class FloorPanel extends JPanel {
     private DefaultTableModel tableModel;
     private JTextField txtFloorNumber;
     private JTextField txtDescription;
-    private JTextField txtCapacity; // Đã thêm biến txtCapacity
+    private JTextField txtCapacity;
     private JButton btnAdd, btnUpdate, btnDelete, btnClear;
     private FloorBLL bll;
     private Long selectedFloorId = null;
@@ -30,14 +30,11 @@ public class FloorPanel extends JPanel {
         setBorder(Theme.sectionPadding());
         setLayout(new BorderLayout(15, 15));
 
-        // --- Tiêu đề trang ---
         JLabel lblTitle = new JLabel("Quản Lý Tầng (Floors)");
         lblTitle.setFont(Theme.FONT_HEADER);
         lblTitle.setForeground(Theme.TEXT_PRIMARY);
         add(lblTitle, BorderLayout.NORTH);
 
-        // --- Bảng hiển thị dữ liệu ---
-        // Cập nhật mảng columns thêm "Sức chứa"
         String[] columns = {"ID", "Số Tầng", "Mô Tả", "Sức chứa"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
@@ -59,7 +56,6 @@ public class FloorPanel extends JPanel {
         scrollPane.getViewport().setBackground(Theme.BG_PRIMARY);
         add(scrollPane, BorderLayout.CENTER);
 
-        // --- Panel Form nhập liệu và Nút chức năng ---
         JPanel bottomPanel = new JPanel(new BorderLayout(10, 10));
         bottomPanel.setBackground(Theme.BG_PRIMARY);
         bottomPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -67,7 +63,6 @@ public class FloorPanel extends JPanel {
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)
         ));
 
-        // Form nhập liệu: Chuyển thành GridLayout(2, 4) để chứa đủ các field
         JPanel formPanel = new JPanel(new GridLayout(2, 4, 15, 15));
         formPanel.setBackground(Theme.BG_PRIMARY);
         
@@ -83,24 +78,21 @@ public class FloorPanel extends JPanel {
         txtCapacity = createTextField();
         formPanel.add(txtCapacity);
 
-        // Thêm 2 panel rỗng để lấp đầy ô trống trong GridLayout
         formPanel.add(new JLabel(""));
         formPanel.add(new JLabel(""));
 
         bottomPanel.add(formPanel, BorderLayout.CENTER);
 
-        // Panel chứa các nút
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         btnPanel.setBackground(Theme.BG_PRIMARY);
 
-        // Khởi tạo và thiết lập trực tiếp cho từng nút
         btnAdd = new JButton("Thêm");
         btnAdd.setFont(Theme.FONT_TITLE);
         btnAdd.setBackground(Theme.ACCENT_TEAL);
         btnAdd.setForeground(Color.WHITE);
         btnAdd.setFocusPainted(false);
-        btnAdd.setBorderPainted(false); // Bắt buộc cho macOS
-        btnAdd.setOpaque(true);         // Bắt buộc cho macOS
+        btnAdd.setBorderPainted(false); 
+        btnAdd.setOpaque(true);
         btnAdd.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnAdd.setPreferredSize(new Dimension(100, 35));
 
@@ -142,7 +134,6 @@ public class FloorPanel extends JPanel {
         bottomPanel.add(btnPanel, BorderLayout.SOUTH);
         add(bottomPanel, BorderLayout.SOUTH);
 
-        // --- Sự kiện chọn dòng trên bảng ---
         table.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting() && table.getSelectedRow() >= 0) {
                 int selectedRow = table.getSelectedRow();
@@ -152,20 +143,16 @@ public class FloorPanel extends JPanel {
                 Object descObj = tableModel.getValueAt(selectedRow, 2);
                 txtDescription.setText(descObj != null ? descObj.toString() : "");
 
-                // Lấy giá trị sức chứa
                 Object capObj = tableModel.getValueAt(selectedRow, 3);
                 txtCapacity.setText(capObj != null ? capObj.toString() : "");
             }
         });
 
-        // --- Gắn sự kiện cho các nút ---
         btnAdd.addActionListener(e -> addAction());
         btnUpdate.addActionListener(e -> updateAction());
         btnDelete.addActionListener(e -> deleteAction());
         btnClear.addActionListener(e -> clearForm());
     }
-
-    // Các hàm tạo UI đồng bộ Theme
     private JLabel createLabel(String text) {
         JLabel label = new JLabel(text);
         label.setFont(Theme.FONT_TITLE);
@@ -183,19 +170,13 @@ public class FloorPanel extends JPanel {
         return textField;
     }
 
-    // Logic xử lý
     private void loadData() {
         tableModel.setRowCount(0);
         List<Floor> list = bll.getAllFloors();
         com.parking.bll.SlotBLL slotBLL = new com.parking.bll.SlotBLL();
 
         for (Floor floor : list) {
-            // Đếm số lượng Slot thực tế đã được vẽ ở tầng này
             int currentSlots = slotBLL.getSlotsByFloor(floor.getId()).size();
-            
-            // Xử lý chuỗi hiển thị sức chứa
-            
-            
             Object[] row = {
                 floor.getId(),
                 floor.getFloorNumber(),
@@ -219,8 +200,6 @@ public class FloorPanel extends JPanel {
             Integer floorNumber = Integer.parseInt(txtFloorNumber.getText().trim());
             String desc = txtDescription.getText().trim();
             Integer capacity = txtCapacity.getText().trim().isEmpty() ? null : Integer.parseInt(txtCapacity.getText().trim());
-
-            // Đã cập nhật hàm bll.addFloor để nhận thêm tham số capacity
             if (bll.addFloor(floorNumber, desc, capacity)) {
                 JOptionPane.showMessageDialog(this, "Thêm tầng thành công!");
                 loadData();
@@ -243,7 +222,6 @@ public class FloorPanel extends JPanel {
             String desc = txtDescription.getText().trim();
             Integer capacity = txtCapacity.getText().trim().isEmpty() ? null : Integer.parseInt(txtCapacity.getText().trim());
 
-            // Đã cập nhật hàm bll.updateFloor để nhận thêm tham số capacity
             if (bll.updateFloor(selectedFloorId, floorNumber, desc, capacity)) {
                 JOptionPane.showMessageDialog(this, "Cập nhật thành công!");
                 loadData();

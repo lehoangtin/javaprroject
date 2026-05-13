@@ -12,19 +12,14 @@ import java.util.List;
 public class MainFrame extends JFrame {
     private JPanel contentArea;
     private CardLayout cards;
-    
-    // Các Panel cũ
     private DashboardPanel dashboardPanel; 
     private CheckInOutPanel checkPanel;
-//  private SlotPanel slotPanel; // Sơ đồ UI do Thịnh/Phi làm
     private ParkingInfoPanel lotPanel;
     private FloorPanel floorPanel;
     private PriceConfigPanel pricePanel;
     private StaffPanel staffPanel;
     private SlotVisualPanel slotVisualPanel; 
-    private HistoryPanel historyPanel; // Khai báo Panel mới	
-    
-    // Bổ sung các Panel mới của Tín
+    private HistoryPanel historyPanel;
     private SlotManagementPanel slotManagePanel; 
     private MonthlySubscriptionPanel subPanel;
 
@@ -43,8 +38,6 @@ public class MainFrame extends JFrame {
 
     private void buildUI() {
         setLayout(new BorderLayout());
-
-        // ── Top bar ──────────────────────────────────────────
         JPanel topBar = new JPanel(new BorderLayout());
         topBar.setBackground(Theme.BG_PRIMARY);
         topBar.setPreferredSize(new Dimension(0, 48));
@@ -58,7 +51,6 @@ public class MainFrame extends JFrame {
         JPanel right = new JPanel(new FlowLayout(FlowLayout.RIGHT, 12, 10));
         right.setOpaque(false);
         
-        // --- BẮT ĐẦU THÊM MỚI: HIỂN THỊ TÊN & NÚT ĐĂNG XUẤT ---
         String userName = (Session.currentUser != null) ? Session.currentUser.getFullName() : "Admin";
         JLabel lblUser = new JLabel("👤 Xin chào, " + userName);
         lblUser.setFont(Theme.FONT_BODY);
@@ -73,7 +65,6 @@ public class MainFrame extends JFrame {
         btnLogout.setOpaque(true);
         btnLogout.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnLogout.addActionListener(e -> handleLogout());
-        // --- KẾT THÚC THÊM MỚI ---
 
         JLabel badge = new JLabel("● Live");
         badge.setFont(Theme.FONT_SMALL);
@@ -90,14 +81,12 @@ public class MainFrame extends JFrame {
         topBar.add(right, BorderLayout.EAST);
         add(topBar, BorderLayout.NORTH);
 
-        // ── Sidebar ──────────────────────────────────────────
         JPanel sidebar = new JPanel();
         sidebar.setBackground(Theme.BG_SIDEBAR);
         sidebar.setPreferredSize(new Dimension(200, 0));
         sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
         sidebar.setBorder(BorderFactory.createEmptyBorder(12, 8, 12, 8));
 
-        // ĐÃ CẬP NHẬT: Thêm menu Lịch Sử Giao Dịch
         String[][] items = {
             {"dash",          "📊  Tổng quan"},
             {"checkin",       "🚗  Vào / Ra"},
@@ -107,7 +96,7 @@ public class MainFrame extends JFrame {
             {"floors",        "🏢  Quản lý Tầng"},
             {"price",         "💰  Biểu giá"},
             {"sub",           "💳  Vé tháng"},
-            {"history",       "📜  Lịch sử GD"},   // THÊM DÒNG NÀY
+            {"history",       "📜  Lịch sử GD"},
             {"staff",         "👥  Nhân sự"}
         };
         
@@ -121,12 +110,10 @@ public class MainFrame extends JFrame {
         }
         add(sidebar, BorderLayout.WEST);
 
-        // ── Content ──────────────────────────────────────────
         cards = new CardLayout();
         contentArea = new JPanel(cards);
         contentArea.setBackground(Theme.BG_SECONDARY);
         
-        // Khởi tạo các Panel
         dashboardPanel  = new DashboardPanel(); 
         checkPanel 		= new CheckInOutPanel();
         lotPanel        = new ParkingInfoPanel();
@@ -134,13 +121,11 @@ public class MainFrame extends JFrame {
         pricePanel      = new PriceConfigPanel();
         staffPanel      = new StaffPanel();
         
-        // Khởi tạo Panel mới
         slotManagePanel = new SlotManagementPanel();
         subPanel        = new MonthlySubscriptionPanel();
         slotVisualPanel = new SlotVisualPanel(); 
-        historyPanel    = new HistoryPanel(); // KHỞI TẠO PANEL LỊCH SỬ
+        historyPanel    = new HistoryPanel();
         
-        // Add vào CardLayout
         contentArea.add(checkPanel, "checkin");
         contentArea.add(dashboardPanel, "dash");
         contentArea.add(slotVisualPanel, "slots"); 
@@ -149,7 +134,7 @@ public class MainFrame extends JFrame {
         contentArea.add(floorPanel, "floors");
         contentArea.add(pricePanel, "price");
         contentArea.add(subPanel,   "sub");             
-        contentArea.add(historyPanel, "history"); // THÊM VÀO CARDLAYOUT
+        contentArea.add(historyPanel, "history"); 
         contentArea.add(staffPanel, "staff");
         
         add(contentArea, BorderLayout.CENTER);
@@ -165,7 +150,6 @@ public class MainFrame extends JFrame {
             b.setForeground(active ? Color.WHITE : new Color(180, 178, 170));
         });
         
-        // Làm mới dữ liệu khi chuyển tab
         if ("dash".equals(key)) {
             dashboardPanel.refreshData(); 
         }
@@ -197,7 +181,6 @@ public class MainFrame extends JFrame {
         lbClock.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
     }
 
-    // --- HÀM ĐĂNG XUẤT ---
     private void handleLogout() {
         int confirm = JOptionPane.showConfirmDialog(this, 
                 "Bạn có chắc chắn muốn đăng xuất?", 
@@ -219,7 +202,6 @@ public class MainFrame extends JFrame {
         }
     }
 
-    // ── Entry point ───────────────────────────────────────────
     public static void main(String[] args) {
         try { 
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");

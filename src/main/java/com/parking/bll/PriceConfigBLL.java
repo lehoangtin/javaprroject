@@ -22,7 +22,6 @@ public class PriceConfigBLL {
     }
 
     public boolean addConfig(VehicleType vehicleType, BigDecimal baseFee, BigDecimal extraFee, BigDecimal monthlyPrice) {
-    	// KIỂM TRA RÀNG BUỘC SỐ ÂM
         if (baseFee.compareTo(BigDecimal.ZERO) < 0 || 
             extraFee.compareTo(BigDecimal.ZERO) < 0 || 
             monthlyPrice.compareTo(BigDecimal.ZERO) < 0) {
@@ -57,7 +56,6 @@ public class PriceConfigBLL {
     public boolean deleteConfig(Long id) {
         return priceConfigDAO.deletePriceConfig(id);
     }
- // Viết sẵn hàm này cho Phi tính tiền
     public PriceConfig getConfigByVehicleType(VehicleType type) {
         return priceConfigDAO.getConfigByType(type); 
     }

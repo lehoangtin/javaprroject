@@ -3,9 +3,9 @@ import com.parking.enums.VehicleType;
 
 public class Vehicle {
     private Long id;
-    private String licensePlate; // Khớp license_plate trong DB[cite: 21]
-    private String color;        // Màu sắc xe để nhận diện
-    private VehicleType vehicleType; //[cite: 21]
+    private String licensePlate; 
+    private String color;
+    private VehicleType vehicleType;
     private String ownerName;
     private String ownerPhone;
 

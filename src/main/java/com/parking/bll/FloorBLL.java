@@ -7,7 +7,7 @@ import com.parking.entity.Slot;
 import java.util.List;
 public class FloorBLL {
     private FloorDAO floorDAO;
-    private SlotDAO slotDAO; // Thêm dòng này
+    private SlotDAO slotDAO;
     public FloorBLL() {
         this.floorDAO = new FloorDAO();
     }
@@ -22,7 +22,7 @@ public class FloorBLL {
         Floor floor = new Floor();
         floor.setFloorNumber(floorNumber);
         floor.setDescription(description);
-        floor.setCapacity(capacity); // Gán thêm capacity
+        floor.setCapacity(capacity);
         
         return floorDAO.addFloor(floor);
     }
@@ -34,29 +34,26 @@ public class FloorBLL {
         floor.setId(id);
         floor.setFloorNumber(floorNumber);
         floor.setDescription(description);
-        floor.setCapacity(capacity); // Gán thêm capacity
+        floor.setCapacity(capacity); 
         
         return floorDAO.updateFloor(floor);
     }
 
     public boolean deleteFloor(Long floorId) {
-        // KIỂM TRA RÀNG BUỘC KHÓA NGOẠI: Tầng này có Slot nào không?
         List<Slot> allSlots = slotDAO.getAllSlots();
         boolean hasSlots = false;
         
         for (Slot slot : allSlots) {
             if (slot.getFloorId().equals(floorId)) {
                 hasSlots = true;
-                break; // Tìm thấy 1 cái là đủ để chặn rồi
+                break;
             }
         }
 
         if (hasSlots) {
             System.err.println("Lỗi nghiệp vụ: Không thể xóa Tầng đang chứa Chỗ đỗ (Slot). Yêu cầu xóa các Slot trước!");
-            return false; // Chặn không cho gọi DAO
+            return false; 
         }
-
-        // Vượt qua kiểm tra an toàn thì mới cho phép xóa
         return floorDAO.deleteFloor(floorId);
     }
 }

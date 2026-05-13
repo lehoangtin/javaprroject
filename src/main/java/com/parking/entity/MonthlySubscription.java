@@ -1,7 +1,7 @@
 package com.parking.entity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import com.parking.enums.SubscriptionStatus; // Thêm import này
+import com.parking.enums.SubscriptionStatus; 
 
 public class MonthlySubscription {
     private Long id;

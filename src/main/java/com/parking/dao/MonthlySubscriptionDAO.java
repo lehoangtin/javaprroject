@@ -108,7 +108,6 @@ public class MonthlySubscriptionDAO {
         return false;
     }
 
-    // XÓA VÉ THÁNG
     public boolean deleteSubscription(Long id) { 
         String sql = "DELETE FROM monthly_subscription WHERE id = ?";
 

@@ -18,8 +18,6 @@ public class Main {
                 
                 System.out.println(">>> 3. Hiển thị LoginDialog (Chờ người dùng nhập liệu)...");
                 login.setVisible(true); 
-
-                // Sau khi Dialog đóng, kiểm tra xem đăng nhập có thành công không
                 if (login.isSucceeded()) {
                     System.out.println(">>> 4. Đăng nhập THÀNH CÔNG! Đang mở giao diện chính...");
                     MainFrame mainFrame = new MainFrame();
@@ -29,7 +27,6 @@ public class Main {
                     System.exit(0); 
                 }
             } catch (Exception e) {
-                // In chi tiết lỗi ra Console để bạn biết chính xác lỗi ở dòng nào
                 System.err.println("!!! LỖI KHỞI ĐỘNG NGHIÊM TRỌNG:");
                 e.printStackTrace(); 
                 JOptionPane.showMessageDialog(null, "Lỗi khởi động: " + e.toString());

@@ -9,8 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ParkingInfoDAO {
-
-    // Lấy thông tin bãi xe (thường là bản ghi đầu tiên - id = 1)
     public ParkingInfo getParkingInfo() {
         String sql = "SELECT * FROM Parking_Info LIMIT 1";
         
@@ -32,17 +30,13 @@ public class ParkingInfoDAO {
         return null;
     }
 
-    // Lưu hoặc Cập nhật thông tin bãi xe (Upsert)
     public boolean saveOrUpdateParkingInfo(ParkingInfo info) {
-        // Kiểm tra xem đã có bản ghi nào chưa
-        ParkingInfo existingInfo = getParkingInfo();
+    	ParkingInfo existingInfo = getParkingInfo();
         
         String sql;
         if (existingInfo == null) {
-            // Chưa có thì Insert
             sql = "INSERT INTO Parking_Info (name, address, hotline) VALUES (?, ?, ?)";
         } else {
-            // Đã có thì Update bản ghi đó
             sql = "UPDATE Parking_Info SET name = ?, address = ?, hotline = ?  WHERE id = ?";
         }
 

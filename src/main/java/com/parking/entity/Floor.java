@@ -4,7 +4,7 @@ public class Floor {
     private Long id;
     private Integer floorNumber; 
     private String description;
-    private Integer capacity; // THÊM DÒNG NÀY
+    private Integer capacity; 
     public Floor() {}
 
 	public Long getId() {

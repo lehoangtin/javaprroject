@@ -3,10 +3,10 @@ import com.parking.enums.*;
 
 public class Slot {
     private Long id;
-    private Long floorId;      // Liên kết với Floor[cite: 18]
-    private String slotNumber; // Số hiệu vị trí (Ví dụ: A-01)
-    private VehicleType vehicleType; // Loại xe cho phép[cite: 18]
-    private SlotStatus status;       //[cite: 18]
+    private Long floorId;
+    private String slotNumber;
+    private VehicleType vehicleType; 
+    private SlotStatus status;
     public Slot() {}
 
 	public Long getId() {

@@ -10,8 +10,6 @@ public class ParkingInfoPanel extends JPanel {
     private JTextField txtName;
     private JTextField txtAddress;
     private JTextField txtHotline;
-    
-    // Khai báo 2 nút
     private JButton btnEdit;
     private JButton btnSave;
     
@@ -21,28 +19,23 @@ public class ParkingInfoPanel extends JPanel {
         bll = new ParkingInfoBLL();
         initComponents();
         loadData();
-        // Mặc định khóa form khi vừa load lên
         setFieldsEnabled(false);
     }
 
     private void initComponents() {
         setBackground(Theme.BG_SECONDARY);
-        setLayout(new GridBagLayout()); // Căn giữa nội dung
+        setLayout(new GridBagLayout()); 
         
-        // --- Card chứa form ---
         JPanel cardPanel = new JPanel();
         cardPanel.setBackground(Theme.BG_PRIMARY);
         cardPanel.setBorder(Theme.cardBorder());
         cardPanel.setLayout(new BorderLayout(20, 20));
         cardPanel.setPreferredSize(new Dimension(500, 400));
-
-        // --- Tiêu đề ---
         JLabel lblTitle = new JLabel("Thông Tin Bãi Xe", SwingConstants.CENTER);
         lblTitle.setFont(Theme.FONT_HEADER);
         lblTitle.setForeground(Theme.TEXT_PRIMARY);
         cardPanel.add(lblTitle, BorderLayout.NORTH);
 
-        // --- Form nhập liệu ---
         JPanel formPanel = new JPanel(new GridLayout(4, 2, 10, 20));
         formPanel.setBackground(Theme.BG_PRIMARY);
         formPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
@@ -61,11 +54,9 @@ public class ParkingInfoPanel extends JPanel {
        
         cardPanel.add(formPanel, BorderLayout.CENTER);
 
-        // --- Khu vực chứa nút bấm ---
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
         btnPanel.setBackground(Theme.BG_PRIMARY);
         
-        // Nút Chỉnh Sửa
         btnEdit = new JButton("Chỉnh Sửa");
         btnEdit.setFont(Theme.FONT_TITLE);
         btnEdit.setBackground(Color.DARK_GRAY);
@@ -74,10 +65,9 @@ public class ParkingInfoPanel extends JPanel {
         btnEdit.setBorderPainted(false);
         btnEdit.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnEdit.setPreferredSize(new Dimension(150, 40));
-        btnEdit.addActionListener(e -> setFieldsEnabled(true)); // Bấm Edit thì mở khóa form
+        btnEdit.addActionListener(e -> setFieldsEnabled(true)); 
         btnEdit.setBorderPainted(false);
-        btnEdit.setOpaque(true); // Thêm dòng này
-        // Nút Lưu
+        btnEdit.setOpaque(true);
         btnSave = new JButton("Lưu Thay Đổi");
         btnSave.setFont(Theme.FONT_TITLE);
         btnSave.setBackground(Theme.ACCENT_BLUE);
@@ -86,15 +76,13 @@ public class ParkingInfoPanel extends JPanel {
         btnSave.setBorderPainted(false);
         btnSave.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnSave.setPreferredSize(new Dimension(150, 40));
-        btnSave.addActionListener(e -> saveAction()); // Bấm Lưu thì gọi hàm Save
+        btnSave.addActionListener(e -> saveAction());
         btnSave.setBorderPainted(false);
-        btnSave.setOpaque(true); // Thêm dòng này
+        btnSave.setOpaque(true); 
         btnPanel.add(btnEdit);
         btnPanel.add(btnSave);
         
         cardPanel.add(btnPanel, BorderLayout.SOUTH);
-
-        // Thêm card vào Panel chính
         add(cardPanel);
     }
 
@@ -112,12 +100,10 @@ public class ParkingInfoPanel extends JPanel {
                 BorderFactory.createLineBorder(Theme.BORDER),
                 BorderFactory.createEmptyBorder(8, 8, 8, 8)
         ));
-        // Đổi màu nền một chút khi textfield bị khóa (tùy chọn)
         textField.setDisabledTextColor(Color.GRAY);
         return textField;
     }
 
-    // --- Hàm điều khiển trạng thái Form ---
     private void setFieldsEnabled(boolean isEnabled) {
         txtName.setEnabled(isEnabled);
         txtAddress.setEnabled(isEnabled);
@@ -127,7 +113,6 @@ public class ParkingInfoPanel extends JPanel {
         btnEdit.setEnabled(!isEnabled);   
     }
 
-    // --- Logic xử lý ---
     private void loadData() {
         ParkingInfo info = bll.getInfo();
         if (info != null) {
@@ -145,7 +130,7 @@ public class ParkingInfoPanel extends JPanel {
 
             if (bll.saveInfo(name, address, hotline)) {
                 JOptionPane.showMessageDialog(this, "Đã lưu thông tin bãi xe thành công!");
-                setFieldsEnabled(false); // Lưu thành công thì khóa form lại
+                setFieldsEnabled(false); 
             } else {
                 JOptionPane.showMessageDialog(this, "Lưu thất bại. Vui lòng kiểm tra lại thông tin", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }

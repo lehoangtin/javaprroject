@@ -7,7 +7,7 @@ public class Staff {
     private String fullName;
     private String username;
     private String passwordHash;
-    private UserRole role;       // ADMIN hoặc STAFF
+    private UserRole role;
     private Boolean isActive;
     private LocalDateTime createdAt;
 

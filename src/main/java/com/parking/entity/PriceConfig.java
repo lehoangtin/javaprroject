@@ -5,9 +5,9 @@ import java.math.BigDecimal;
 public class PriceConfig {
     private Long id;
     private VehicleType vehicleType; 
-    private BigDecimal baseFee;          // Giá khởi điểm
-    private BigDecimal extraFeePerHour;  // Phí mỗi giờ tiếp theo
-    private BigDecimal monthlyPrice;     // Giá vé tháng
+    private BigDecimal baseFee;
+    private BigDecimal extraFeePerHour;
+    private BigDecimal monthlyPrice;
 
     public PriceConfig() {}
 

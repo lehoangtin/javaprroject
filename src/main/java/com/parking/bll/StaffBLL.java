@@ -53,7 +53,6 @@ public class StaffBLL {
         return staffDAO.updateStaff(staff, updatePassword);
     }
 
-    // Thay đổi kiểu trả về thành String để báo lỗi chi tiết
     public String deleteStaff(Long id, String username) { 
         if (!Session.isAdmin()) return "Bạn không có quyền thực hiện thao tác này!";
 

@@ -30,21 +30,17 @@ public class PriceConfigPanel extends JPanel {
     }
 
     private void initComponents() {
-        // Áp dụng màu nền và padding từ Theme
         setBackground(Theme.BG_SECONDARY);
         setBorder(Theme.sectionPadding());
         setLayout(new BorderLayout(15, 15));
 
-        // --- Tiêu đề trang ---
         JLabel lblTitle = new JLabel("Cấu Hình Biểu Giá (Price Config)");
         lblTitle.setFont(Theme.FONT_HEADER);
         lblTitle.setForeground(Theme.TEXT_PRIMARY);
         add(lblTitle, BorderLayout.NORTH);
 
-        // --- Bảng hiển thị dữ liệu (READ) ---
         String[] columns = {"ID", "Loại Xe", "Giá Khởi Điểm", "Phí/Giờ Thêm", "Giá Vé Tháng"};
         tableModel = new DefaultTableModel(columns, 0) {
-            @Override
             public boolean isCellEditable(int row, int column) { return false; }
         };
         table = new JTable(tableModel);
@@ -63,7 +59,6 @@ public class PriceConfigPanel extends JPanel {
         scrollPane.getViewport().setBackground(Theme.BG_PRIMARY);
         add(scrollPane, BorderLayout.CENTER);
 
-        // --- Panel Form nhập liệu và Nút chức năng ---
         JPanel bottomPanel = new JPanel(new BorderLayout(10, 10));
         bottomPanel.setBackground(Theme.BG_PRIMARY);
         bottomPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -71,7 +66,6 @@ public class PriceConfigPanel extends JPanel {
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)
         ));
 
-        // Form nhập liệu
         JPanel formPanel = new JPanel(new GridLayout(2, 4, 15, 15));
         formPanel.setBackground(Theme.BG_PRIMARY);
         
@@ -94,18 +88,16 @@ public class PriceConfigPanel extends JPanel {
 
         bottomPanel.add(formPanel, BorderLayout.CENTER);
 
-        // Panel chứa các nút
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         btnPanel.setBackground(Theme.BG_PRIMARY);
 
-     // Khởi tạo và thiết lập trực tiếp cho từng nút
         btnAdd = new JButton("Thêm");
         btnAdd.setFont(Theme.FONT_TITLE);
         btnAdd.setBackground(Theme.ACCENT_TEAL);
         btnAdd.setForeground(Color.WHITE);
         btnAdd.setFocusPainted(false);
-        btnAdd.setBorderPainted(false); // Bắt buộc cho macOS
-        btnAdd.setOpaque(true);         // Bắt buộc cho macOS
+        btnAdd.setBorderPainted(false); 
+        btnAdd.setOpaque(true);
         btnAdd.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnAdd.setPreferredSize(new Dimension(100, 35));
 
@@ -147,7 +139,6 @@ public class PriceConfigPanel extends JPanel {
         bottomPanel.add(btnPanel, BorderLayout.SOUTH);
         add(bottomPanel, BorderLayout.SOUTH);
 
-        // --- Sự kiện chọn dòng trên bảng ---
         table.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting() && table.getSelectedRow() >= 0) {
                 int selectedRow = table.getSelectedRow();
@@ -159,14 +150,12 @@ public class PriceConfigPanel extends JPanel {
             }
         });
 
-        // --- Gắn sự kiện cho các nút ---
         btnAdd.addActionListener(e -> addAction());
         btnUpdate.addActionListener(e -> updateAction());
         btnDelete.addActionListener(e -> deleteAction());
         btnClear.addActionListener(e -> clearForm());
     }
 
-    // --- Các hàm tiện ích tạo UI đồng bộ với Theme ---
     private JLabel createLabel(String text) {
         JLabel label = new JLabel(text);
         label.setFont(Theme.FONT_TITLE);
@@ -196,7 +185,6 @@ public class PriceConfigPanel extends JPanel {
         return btn;
     }
 
-    // --- Các hàm xử lý Logic (CRUD) ---
     private void loadData() {
         tableModel.setRowCount(0);
         List<PriceConfig> list = bll.getAllConfigs();

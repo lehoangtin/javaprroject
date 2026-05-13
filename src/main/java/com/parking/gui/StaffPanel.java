@@ -32,17 +32,13 @@ public class StaffPanel extends JPanel {
         setBackground(Theme.BG_SECONDARY);
         setBorder(Theme.sectionPadding()); 
 
-        // --- Tiêu đề trang ---
-        JLabel lblTitle = new JLabel("Quản Lý Nhân Sự (Staff)");
+        JLabel lblTitle = new JLabel("Quản Lý Nhân Sự");
         lblTitle.setFont(Theme.FONT_HEADER);
         lblTitle.setForeground(Theme.TEXT_PRIMARY);
         add(lblTitle, BorderLayout.NORTH);
-
-        // --- Panel Khung chính ---
         JPanel centerPanel = new JPanel(new BorderLayout(10, 10));
         centerPanel.setOpaque(false);
 
-        // --- 1. FORM NHẬP LIỆU ---
         JPanel formPanel = new JPanel(new GridBagLayout());
         formPanel.setBackground(Theme.BG_PRIMARY);
         formPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -55,7 +51,6 @@ public class StaffPanel extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
 
-        // Dòng 1
         gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 0.2; 
         formPanel.add(createLabel("Mã NV:"), gbc);
         gbc.gridx = 1; gbc.weightx = 0.8; 
@@ -68,7 +63,6 @@ public class StaffPanel extends JPanel {
         txtFullName = createTextField(); 
         formPanel.add(txtFullName, gbc);
 
-        // Dòng 2
         gbc.gridx = 0; gbc.gridy = 1; gbc.weightx = 0.2; 
         formPanel.add(createLabel("Tên đăng nhập:"), gbc);
         gbc.gridx = 1; gbc.weightx = 0.8; 
@@ -82,7 +76,6 @@ public class StaffPanel extends JPanel {
         cbRole.setFont(Theme.FONT_BODY);
         formPanel.add(cbRole, gbc);
 
-        // Dòng 3
         gbc.gridx = 0; gbc.gridy = 2; gbc.weightx = 0.2; 
         formPanel.add(createLabel("Mật khẩu:"), gbc);
         gbc.gridx = 1; gbc.gridwidth = 3; gbc.weightx = 0.8; 
@@ -97,11 +90,8 @@ public class StaffPanel extends JPanel {
 
         centerPanel.add(formPanel, BorderLayout.NORTH);
 
-        // --- 2. BẢNG DỮ LIỆU ---
-        // THÊM CỘT TRẠNG THÁI VÀO BẢNG
         String[] columns = {"ID", "Tên đăng nhập", "Họ tên", "Vai trò", "Trạng thái"};
         tableModel = new DefaultTableModel(columns, 0) {
-            @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
@@ -124,7 +114,6 @@ public class StaffPanel extends JPanel {
 
         add(centerPanel, BorderLayout.CENTER);
 
-        // --- 3. KHU VỰC NÚT BẤM ---
         JPanel bottomPanel = new JPanel(new BorderLayout());
         bottomPanel.setOpaque(false);
         bottomPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
@@ -152,10 +141,9 @@ public class StaffPanel extends JPanel {
         btnEdit.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnEdit.setPreferredSize(new Dimension(130, 35));
 
-        // ĐỔI TÊN VÀ MÀU SẮC CHO NÚT "KHÓA TÀI KHOẢN"
         btnDelete = new JButton("Khóa tài khoản");
         btnDelete.setFont(Theme.FONT_TITLE);
-        btnDelete.setBackground(new Color(255, 153, 0)); // Màu Cam Cảnh báo
+        btnDelete.setBackground(new Color(255, 153, 0));
         btnDelete.setForeground(Color.WHITE);
         btnDelete.setFocusPainted(false);
         btnDelete.setBorderPainted(false);
@@ -181,7 +169,6 @@ public class StaffPanel extends JPanel {
         bottomPanel.add(btnPanel, BorderLayout.EAST);
         add(bottomPanel, BorderLayout.SOUTH);
 
-        // --- 4. SỰ KIỆN NÚT BẤM ---
         btnAdd.addActionListener(e -> addAction());
         btnEdit.addActionListener(e -> editAction());
         btnDelete.addActionListener(e -> deleteAction());
@@ -217,7 +204,6 @@ public class StaffPanel extends JPanel {
         tableModel.setRowCount(0); 
         List<Staff> list = bll.getAllStaff();
         for (Staff s : list) {
-            // Hiển thị text trực quan dựa trên is_active
         	String status = (s.getIsActive() != null && s.getIsActive()) ? "Đang làm việc" : "Đã nghỉ việc";            
             tableModel.addRow(new Object[]{
                 s.getId(), s.getUsername(), s.getFullName(), s.getRole(), status
@@ -292,22 +278,20 @@ public class StaffPanel extends JPanel {
         }
         
         Long id = Long.parseLong(txtId.getText());
-        String username = txtUsername.getText(); // Lấy username để BLL kiểm tra
+        String username = txtUsername.getText(); 
         
-        // SỬA CÂU HỎI XÁC NHẬN CHO CHUẨN UX
         int confirm = JOptionPane.showConfirmDialog(this, 
                 "Bạn có chắc chắn muốn khóa tài khoản / cho nhân viên này nghỉ việc không?", 
                 "Xác nhận khóa", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
                 
         if (confirm == JOptionPane.YES_OPTION) {
-            String result = bll.deleteStaff(id, username); // Gọi hàm mới
+            String result = bll.deleteStaff(id, username); 
             
             if ("SUCCESS".equals(result)) {
                 JOptionPane.showMessageDialog(this, "Đã khóa tài khoản nhân viên thành công!");
                 loadDataToTable();
                 clearForm();
             } else {
-                // In ra chi tiết lý do từ chối (Vd: Là Admin gốc)
                 JOptionPane.showMessageDialog(this, result, "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             }
         }

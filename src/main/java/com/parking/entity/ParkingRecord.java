@@ -7,11 +7,11 @@ public class ParkingRecord {
     private Long id;
     private LocalDateTime timeIn;
     private LocalDateTime timeOut;
-    private BigDecimal fee;      //[cite: 16]
+    private BigDecimal fee;     
     private Long vehicleId;
     private Long slotId;
-    private Long staffId;        // Nhân viên thực hiện giao dịch
-    private RecordStatus status; //[cite: 16]
+    private Long staffId;       
+    private RecordStatus status;
 
     public ParkingRecord() {}
 
