@@ -85,6 +85,7 @@ public class CheckInOutPanel extends JPanel {
         gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 2;
         gbc.insets = new Insets(20, 15, 5, 15);
         btnCheckIn = new JButton("Ghi nhận xe vào");
+        btnCheckIn.setUI(new javax.swing.plaf.basic.BasicButtonUI());
         btnCheckIn.setFont(new Font("Segoe UI", Font.BOLD, 14));
         btnCheckIn.setPreferredSize(new Dimension(0, 35));
         formPanel.add(btnCheckIn, gbc);
@@ -145,6 +146,7 @@ public class CheckInOutPanel extends JPanel {
         gbc.gridy = 3;
         gbc.insets = new Insets(10, 15, 5, 15);
         btnCheckOut = new JButton("Thanh toán & Ra xe");
+        btnCheckOut.setUI(new javax.swing.plaf.basic.BasicButtonUI());
         btnCheckOut.setFont(new Font("Segoe UI", Font.BOLD, 14));
         btnCheckOut.setPreferredSize(new Dimension(0, 35));
         btnCheckOut.setEnabled(false); 

@@ -57,6 +57,7 @@ public class MainFrame extends JFrame {
         lblUser.setForeground(Theme.TEXT_PRIMARY);
 
         JButton btnLogout = new JButton("Đăng Xuất");
+        btnLogout.setUI(new javax.swing.plaf.basic.BasicButtonUI());
         btnLogout.setFont(Theme.FONT_SMALL);
         btnLogout.setBackground(Theme.ACCENT_RED);
         btnLogout.setForeground(Color.WHITE);
@@ -64,6 +65,7 @@ public class MainFrame extends JFrame {
         btnLogout.setBorderPainted(false);
         btnLogout.setOpaque(true);
         btnLogout.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnLogout.setPreferredSize(new Dimension(130, 30));
         btnLogout.addActionListener(e -> handleLogout());
 
         JLabel badge = new JLabel("● Live");

@@ -23,7 +23,7 @@ public class Theme {
     public static final Font FONT_BODY    = new Font("Segoe UI", Font.PLAIN,  13);
     public static final Font FONT_SMALL   = new Font("Segoe UI", Font.PLAIN,  11);
     public static final Font FONT_HEADER  = new Font("Segoe UI", Font.BOLD,   22);
-    public static final Font FONT_NAV     = new Font("Segoe UI Emoji", Font.PLAIN,  13);
+    public static final Font FONT_NAV     = new Font(Font.SANS_SERIF, Font.PLAIN,  13);
 
     public static javax.swing.border.Border cardBorder() {
         return javax.swing.BorderFactory.createCompoundBorder(

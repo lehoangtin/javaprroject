@@ -87,6 +87,7 @@ public class FloorPanel extends JPanel {
         btnPanel.setBackground(Theme.BG_PRIMARY);
 
         btnAdd = new JButton("Thêm");
+        btnAdd.setUI(new javax.swing.plaf.basic.BasicButtonUI());
         btnAdd.setFont(Theme.FONT_TITLE);
         btnAdd.setBackground(Theme.ACCENT_TEAL);
         btnAdd.setForeground(Color.WHITE);
@@ -97,6 +98,7 @@ public class FloorPanel extends JPanel {
         btnAdd.setPreferredSize(new Dimension(100, 35));
 
         btnUpdate = new JButton("Sửa");
+        btnUpdate.setUI(new javax.swing.plaf.basic.BasicButtonUI());
         btnUpdate.setFont(Theme.FONT_TITLE);
         btnUpdate.setBackground(Theme.ACCENT_BLUE);
         btnUpdate.setForeground(Color.WHITE);
@@ -107,6 +109,7 @@ public class FloorPanel extends JPanel {
         btnUpdate.setPreferredSize(new Dimension(100, 35));
 
         btnDelete = new JButton("Xóa");
+        btnDelete.setUI(new javax.swing.plaf.basic.BasicButtonUI());
         btnDelete.setFont(Theme.FONT_TITLE);
         btnDelete.setBackground(Theme.ACCENT_RED);
         btnDelete.setForeground(Color.WHITE);
@@ -117,6 +120,7 @@ public class FloorPanel extends JPanel {
         btnDelete.setPreferredSize(new Dimension(100, 35));
 
         btnClear = new JButton("Làm mới");
+        btnClear.setUI(new javax.swing.plaf.basic.BasicButtonUI());
         btnClear.setFont(Theme.FONT_TITLE);
         btnClear.setBackground(Theme.TEXT_MUTED);
         btnClear.setForeground(Color.WHITE);

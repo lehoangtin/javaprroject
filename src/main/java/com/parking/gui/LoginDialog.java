@@ -84,18 +84,22 @@ public class LoginDialog extends JDialog {
         btnPanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.BORDER));
 
         btnLogin = new JButton("Đăng Nhập");
+        btnLogin.setUI(new javax.swing.plaf.basic.BasicButtonUI());
         btnLogin.setFont(Theme.FONT_TITLE);
         btnLogin.setBackground(Theme.ACCENT_BLUE);
         btnLogin.setForeground(Color.WHITE);
         btnLogin.setBorderPainted(false);
         btnLogin.setOpaque(true);
+        btnLogin.setPreferredSize(new Dimension(130, 40));
 
         btnCancel = new JButton("Thoát");
+        btnCancel.setUI(new javax.swing.plaf.basic.BasicButtonUI());
         btnCancel.setFont(Theme.FONT_TITLE);
         btnCancel.setBackground(Theme.ACCENT_RED);
         btnCancel.setForeground(Color.WHITE);
         btnCancel.setBorderPainted(false);
         btnCancel.setOpaque(true);
+        btnCancel.setPreferredSize(new Dimension(130, 40));
 
         btnPanel.add(btnLogin);
         btnPanel.add(btnCancel);

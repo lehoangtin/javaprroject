@@ -20,7 +20,6 @@ public class MonthlySubscriptionPanel extends JPanel {
     private JTable table;
     private DefaultTableModel tableModel;
     
-    // Các ô nhập liệu thiết kế mới
     private JTextField txtLicensePlate, txtOwnerName, txtOwnerPhone;
     private JTextField txtStartDate, txtEndDate, txtAmountPaid;
     private JComboBox<VehicleType> cbVehicleType;
@@ -28,7 +27,7 @@ public class MonthlySubscriptionPanel extends JPanel {
     private JButton btnAdd, btnUpdate, btnDelete, btnClear;
     
     private MonthlySubscriptionBLL bll;
-    private VehicleDAO vehicleDAO; // Để hiển thị thông tin ra bảng
+    private VehicleDAO vehicleDAO; 
     private Long selectedSubId = null;
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -44,13 +43,11 @@ public class MonthlySubscriptionPanel extends JPanel {
         setBorder(Theme.sectionPadding());
         setLayout(new BorderLayout(15, 15));
 
-        // --- TITLE ---
         JLabel lblTitle = new JLabel("Quản Lý Khách Hàng & Vé Tháng");
         lblTitle.setFont(Theme.FONT_HEADER);
         lblTitle.setForeground(Theme.TEXT_PRIMARY);
         add(lblTitle, BorderLayout.NORTH);
 
-        // --- TABLE ---
         String[] columns = {"ID Vé", "Biển Số", "Loại Xe", "Tên Chủ Xe", "SĐT", "Ngày Đăng Ký", "Ngày Hết Hạn", "Số Tiền", "Trạng Thái"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override public boolean isCellEditable(int row, int column) { return false; }
@@ -65,7 +62,6 @@ public class MonthlySubscriptionPanel extends JPanel {
         scrollPane.setBorder(Theme.cardBorder());
         add(scrollPane, BorderLayout.CENTER);
 
-        // --- FORM PANEL (Layout siêu đẹp) ---
         JPanel bottomPanel = new JPanel(new BorderLayout(10, 10));
         bottomPanel.setBackground(Theme.BG_PRIMARY);
         bottomPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -73,7 +69,6 @@ public class MonthlySubscriptionPanel extends JPanel {
                 BorderFactory.createEmptyBorder(15, 15, 15, 15)
         ));
 
-        // Dùng GridBagLayout để căn chỉnh form xịn xò
         JPanel formPanel = new JPanel(new GridBagLayout());
         formPanel.setBackground(Theme.BG_PRIMARY);
         GridBagConstraints gbc = new GridBagConstraints();
@@ -81,7 +76,6 @@ public class MonthlySubscriptionPanel extends JPanel {
         gbc.insets = new Insets(8, 15, 8, 15);
         gbc.weightx = 0.5;
 
-        // CỘT 1 (Bên Trái)
         gbc.gridx = 0; gbc.gridy = 0;
         formPanel.add(createLabel("Biển số xe *"), gbc);
         gbc.gridy = 1;
@@ -106,7 +100,6 @@ public class MonthlySubscriptionPanel extends JPanel {
         txtAmountPaid = createTextField();
         formPanel.add(txtAmountPaid, gbc);
 
-        // CỘT 2 (Bên Phải)
         gbc.gridx = 1; gbc.gridy = 0;
         formPanel.add(createLabel("Loại xe"), gbc);
         gbc.gridy = 1;
@@ -144,14 +137,17 @@ public class MonthlySubscriptionPanel extends JPanel {
 
         bottomPanel.add(formPanel, BorderLayout.CENTER);
 
-        // --- BUTTONS ---
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         btnPanel.setBackground(Theme.BG_PRIMARY);
 
         btnAdd = createButton("Ghi Nhận", Theme.ACCENT_TEAL);
+        btnAdd.setUI(new javax.swing.plaf.basic.BasicButtonUI());
         btnUpdate = createButton("Cập Nhật", Theme.ACCENT_BLUE);
+        btnUpdate.setUI(new javax.swing.plaf.basic.BasicButtonUI());
         btnDelete = createButton("Xóa Vé", Theme.ACCENT_RED);
+        btnDelete.setUI(new javax.swing.plaf.basic.BasicButtonUI());
         btnClear = createButton("Làm Mới", Theme.TEXT_MUTED);
+        btnClear.setUI(new javax.swing.plaf.basic.BasicButtonUI());
 
         btnPanel.add(btnAdd); btnPanel.add(btnUpdate); 
         btnPanel.add(btnDelete); btnPanel.add(btnClear);
@@ -159,7 +155,6 @@ public class MonthlySubscriptionPanel extends JPanel {
         bottomPanel.add(btnPanel, BorderLayout.SOUTH);
         add(bottomPanel, BorderLayout.SOUTH);
 
-        // --- EVENTS ---
         table.getSelectionModel().addListSelectionListener(e -> fillFormFromTable());
         btnAdd.addActionListener(e -> saveAction(true));
         btnUpdate.addActionListener(e -> saveAction(false));
@@ -264,7 +259,6 @@ public class MonthlySubscriptionPanel extends JPanel {
             sub.setAmountPaid(new BigDecimal(txtAmountPaid.getText().trim()));
             sub.setStatus((com.parking.enums.SubscriptionStatus) cbStatus.getSelectedItem());
 
-            // Gọi hàm xử lý thông minh từ BLL
             String result = bll.saveSubscriptionFull(isAdd ? null : selectedSubId, plate, type, ownerName, ownerPhone, sub);
 
             if ("SUCCESS".equals(result)) {

@@ -32,6 +32,7 @@ public class DashboardPanel extends JPanel {
         lblTitle.setForeground(Theme.TEXT_PRIMARY);
         
         JButton btnRefresh = new JButton("Làm Mới Dữ Liệu");
+        btnRefresh.setUI(new javax.swing.plaf.basic.BasicButtonUI());
         btnRefresh.setFont(Theme.FONT_TITLE);
         btnRefresh.setBackground(Theme.TEXT_MUTED);
         btnRefresh.setForeground(Color.WHITE);

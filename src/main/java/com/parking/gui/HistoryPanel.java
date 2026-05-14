@@ -131,6 +131,7 @@ public class HistoryPanel extends JPanel {
     }
 
     private void styleButton(JButton btn, Color bg) {
+    	btn.setUI(new javax.swing.plaf.basic.BasicButtonUI());
         btn.setFont(Theme.FONT_TITLE);
         btn.setBackground(bg);
         btn.setForeground(Color.WHITE);

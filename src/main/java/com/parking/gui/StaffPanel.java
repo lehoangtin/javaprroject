@@ -122,6 +122,7 @@ public class StaffPanel extends JPanel {
         btnPanel.setBackground(Theme.BG_SECONDARY);
 
         btnAdd = new JButton("Thêm Mới");
+        btnAdd.setUI(new javax.swing.plaf.basic.BasicButtonUI());
         btnAdd.setFont(Theme.FONT_TITLE);
         btnAdd.setBackground(Theme.ACCENT_TEAL);
         btnAdd.setForeground(Color.WHITE);
@@ -132,6 +133,7 @@ public class StaffPanel extends JPanel {
         btnAdd.setPreferredSize(new Dimension(130, 35));
 
         btnEdit = new JButton("Cập Nhật");
+        btnEdit.setUI(new javax.swing.plaf.basic.BasicButtonUI());
         btnEdit.setFont(Theme.FONT_TITLE);
         btnEdit.setBackground(Theme.ACCENT_BLUE);
         btnEdit.setForeground(Color.WHITE);
@@ -142,6 +144,7 @@ public class StaffPanel extends JPanel {
         btnEdit.setPreferredSize(new Dimension(130, 35));
 
         btnDelete = new JButton("Khóa tài khoản");
+        btnDelete.setUI(new javax.swing.plaf.basic.BasicButtonUI());
         btnDelete.setFont(Theme.FONT_TITLE);
         btnDelete.setBackground(new Color(255, 153, 0));
         btnDelete.setForeground(Color.WHITE);
@@ -152,6 +155,7 @@ public class StaffPanel extends JPanel {
         btnDelete.setPreferredSize(new Dimension(160, 35));
 
         btnClear = new JButton("Làm Mới");
+        btnClear.setUI(new javax.swing.plaf.basic.BasicButtonUI());
         btnClear.setFont(Theme.FONT_TITLE);
         btnClear.setBackground(Theme.TEXT_MUTED);
         btnClear.setForeground(Color.WHITE);

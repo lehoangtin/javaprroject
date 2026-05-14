@@ -175,6 +175,7 @@ public class PriceConfigPanel extends JPanel {
 
     private JButton createButton(String text, Color bgColor) {
         JButton btn = new JButton(text);
+        btn.setUI(new javax.swing.plaf.basic.BasicButtonUI());
         btn.setFont(Theme.FONT_TITLE);
         btn.setBackground(bgColor);
         btn.setForeground(Color.WHITE);

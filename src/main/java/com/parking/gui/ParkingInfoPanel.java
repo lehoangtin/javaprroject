@@ -58,6 +58,7 @@ public class ParkingInfoPanel extends JPanel {
         btnPanel.setBackground(Theme.BG_PRIMARY);
         
         btnEdit = new JButton("Chỉnh Sửa");
+        btnEdit.setUI(new javax.swing.plaf.basic.BasicButtonUI());
         btnEdit.setFont(Theme.FONT_TITLE);
         btnEdit.setBackground(Color.DARK_GRAY);
         btnEdit.setForeground(Color.WHITE);
@@ -69,6 +70,7 @@ public class ParkingInfoPanel extends JPanel {
         btnEdit.setBorderPainted(false);
         btnEdit.setOpaque(true);
         btnSave = new JButton("Lưu Thay Đổi");
+        btnSave.setUI(new javax.swing.plaf.basic.BasicButtonUI());
         btnSave.setFont(Theme.FONT_TITLE);
         btnSave.setBackground(Theme.ACCENT_BLUE);
         btnSave.setForeground(Color.WHITE);
