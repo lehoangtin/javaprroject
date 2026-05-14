@@ -27,7 +27,7 @@ public class MainFrame extends JFrame {
     private JLabel lbClock;
 
     public MainFrame() {
-        setTitle("🅿 Nhà Xe TTP — Hệ thống quản lý nhà xe");
+        setTitle("Nhà Xe TTP — Hệ thống quản lý nhà xe");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(1200, 750);
         setMinimumSize(new Dimension(900, 600));
@@ -43,7 +43,7 @@ public class MainFrame extends JFrame {
         topBar.setPreferredSize(new Dimension(0, 48));
         topBar.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.BORDER));
 
-        JLabel logo = new JLabel("  🅿  Nhà xe TTP");
+        JLabel logo = new JLabel("Nhà xe TTP");
         logo.setFont(new Font("Segoe UI", Font.BOLD, 15));
         logo.setForeground(Theme.ACCENT_BLUE);
         topBar.add(logo, BorderLayout.WEST);
@@ -52,7 +52,7 @@ public class MainFrame extends JFrame {
         right.setOpaque(false);
         
         String userName = (Session.currentUser != null) ? Session.currentUser.getFullName() : "Admin";
-        JLabel lblUser = new JLabel("👤 Xin chào, " + userName);
+        JLabel lblUser = new JLabel("Xin chào, " + userName);
         lblUser.setFont(Theme.FONT_BODY);
         lblUser.setForeground(Theme.TEXT_PRIMARY);
 
