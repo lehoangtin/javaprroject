@@ -160,7 +160,7 @@ public class CheckInOutPanel extends JPanel {
 
         JPanel wrapper = new JPanel(new BorderLayout());
         wrapper.setBackground(Color.WHITE);
-        wrapper.add(formPanel, BorderLayout.NORTH); // Ép form dính chặt lên trên
+        wrapper.add(formPanel, BorderLayout.NORTH);
 
         panel.add(wrapper, BorderLayout.CENTER);
         return panel;
@@ -270,7 +270,7 @@ public class CheckInOutPanel extends JPanel {
         
         for (com.parking.entity.Slot slot : allSlots) {
             if (slot.getStatus() == com.parking.enums.SlotStatus.EMPTY) {
-                cbInSlot.addItem(slot.getId() + " - " + slot.getSlotNumber());
+                cbInSlot.addItem(slot.getSlotNumber());
             }
         }
     }
